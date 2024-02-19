@@ -1,9 +1,8 @@
 import React from "react";
 import { DocsThemeConfig } from "nextra-theme-docs";
-import Image from "next/image";
 
 const config: DocsThemeConfig = {
-  logo: <Image src="/logo.png" alt="logo" width={50} height={50} />,
+  logo: <img src="/logo.png" alt="logo" width={50} height={50} />,
   faviconGlyph: "⭐️",
   project: {
     link: "https://github.com/shuding/nextra-docs-template",
@@ -29,7 +28,7 @@ const config: DocsThemeConfig = {
   head: () => {
     return (
       <>
-        <link rel="shortcut icon" href="favicon.ico" type="image/x-icon" />
+        <link rel="shortcut icon" href="/favicon.ico" type="image/x-icon" />
       </>
     );
   },

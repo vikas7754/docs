@@ -30,11 +30,8 @@ baseurl: /mce/devsecops-docs
 # Build settings
 markdown: kramdown
 remote_theme: pmarsceill/just-the-docs@v0.3.3
-plugins:
-  - jekyll-feed
-  - jekyll-paginate
 
-logo: ./assets/SecDevOpsLogo.png
+logo: /logo.png
 # Exclude from processing.
 # The following items will not be processed, by default. Create a custom list
 # to override the default setting.

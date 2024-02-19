@@ -41,7 +41,7 @@ For example, _sap-mcsec-orca-operations_ project \> **Security** \>
 **New Version** \> paste text into secret value box and click on **Add
 New Version**
 
-![gcp_rotation_3](/assets/docs-images/orca_ops_runbooks/gcpversions.PNG)
+![gcp_rotation_3](/assets/docs-images/orca_ops_runbooks/gcpversions.png)
 
 # Azure_CN Key Rotation
 
