@@ -1,0 +1,427 @@
+---
+title: "[ARCHIVE] Secure Cloud Delivery: Chef InSpec On-Demand Scanning"
+---
+
+# [ARCHIVE] Secure Cloud Delivery: Chef InSpec On-Demand Scanning
+
+Context: The following docker containers can be run "on-demand" against your existing hyperscaler account to check the account's compliance to SGS policies. Ideally, these containers could be used in a CI/CD pipeline to catch the covered policy violations during the testing phase. Please note, the documentation relates to running an "on-demand" scan for a single account. Please refer to the AWS section for further information in considerations for running an "on demand" scan for multiple accounts.
+
+Need assistance? Come talk to us in our Slack Channel: #sap-hyperscaler-security
+
+## Current Release
+
+#### The current release can by pulled via the following URLs:
+
+**AliCloud**: mcsec.common.repositories.cloud.sap/inspec/profiles/sap-alicloud:4.19.0
+
+**AWS**: mcsec.common.repositories.cloud.sap/inspec/profiles/sap-aws:4.21.0
+
+**Azure**: mcsec.common.repositories.cloud.sap/inspec/profiles/sap-azure:4.19.0
+
+**GCP**: mcsec.common.repositories.cloud.sap/inspec/profiles/sap-gcp:4.18.0
+
+#### All of the above repositories require the following authentication steps:
+
+1. Login at https://common.repositories.cloud.sap/ui/login/ using SSO.
+
+   <img
+     align="center"
+     src="/assets/docs-images/AdHoc_Images/jfrog_login.png"
+     width="65%"
+     height="65%"
+   />
+
+2. Go to the drop-down list on the top right and click "Edit Profile"
+
+   <img
+     align="center"
+     src="/assets/docs-images/AdHoc_Images/jfrog_edit_profile.png"
+     width="65%"
+     height="65%"
+   />
+
+3. In the edit profile screen, click "Generate an Identity Token" - this will be used as your password when authenticating to the repository. This Identity Reference Token has a validity period and needs to be regenerated when expired.
+
+   <img
+     align="center"
+     src="/assets/docs-images/AdHoc_Images/id_token.png"
+     width="65%"
+     height="65%"
+   />
+
+4. Login to the repository `docker login mcsec.common.repositories.cloud.sap` and you will be prompted for a username and password.
+   <img
+     align="center"
+     src="/assets/docs-images/AdHoc_Images/docker_login.png"
+     width="65%"
+     height="65%"
+   />
+
+#### Once you are authenticated, you can pull the container with the following command:
+
+> docker pull mcsec.common.repositories.cloud.sap/inspec/profiles/"hyperscaler":"version"
+
+Please note, you should change the _hyperscaler_ to an appropriate hyperscaler (e.g. sap-azure, sap-aws, sap-gcp) and the _version_ to the latest available release.
+
+## Reporting Types
+
+These examples will output files to a folder called /tmp in the directory where
+the docker command was run.
+
+JUnit:
+
+> -e JUNIT_OUT=/out/junit.xml -v $PWD/tmp:/out
+
+JSON:
+
+> -e JSON_OUT=/out/out.json -v $PWD/tmp:/out
+
+HTML:
+
+> -e HTML_OUT=/out/out -v $PWD/tmp:/out
+
+# GCP
+
+Detailed information on each GCP control, including remediations, can be found [here](/external/compliance_scanning/minerva_gcp_controls)
+
+## Controls:
+
+import controlsDataGCP from "../../../../data/json/sapGCP.json";
+export const GcpControlsTable = () => {
+  const controls = [...controlsDataGCP.controls];
+  return (
+    <table>
+      <thead>
+        <tr>
+          <th>Inspec Control</th>
+          <th>SGS Reference Link</th>
+          <th>Information</th>
+        </tr>
+      </thead>
+      <tbody>
+        {controls.map((control) => (
+          <tr key={control.id}>
+            <td>{control.id}</td>
+            <td>
+              <a href={"https://wiki.wdf.sap.corp/wiki/x/9Ik-cg"}>
+                sgs wiki link
+              </a>
+            </td>
+            <td>{control.title}</td>
+          </tr>
+        ))}
+      </tbody>
+    </table>
+  );
+};
+
+<GcpControlsTable />
+
+## Required Service account & Permissions
+
+In order to run these scans, we recommend creating a service account which has the basic **Viewer** role.
+
+Along with this, you want to create a custom role containing the following permissions:
+
+```
+compute.firewalls.get
+compute.firewalls.list
+compute.networks.get
+compute.networks.list
+compute.regions.list
+compute.sslPolicies.get
+compute.subnetworks.list
+compute.zones.list
+resourcemanager.projects.get
+storage.buckets.getIamPolicy
+```
+
+And apply that to your service account.
+
+## Example run with XML reporting:
+
+    docker pull mcsec.common.repositories.cloud.sap/inspec/profiles/sap-gcp:4.18.0
+
+    docker run -it --rm \
+        -e GCP_ORG_ID=$GCP_ORG_ID -e GCP_PROJECT_ID=$GCP_PROJECT_ID \
+        -e JUNIT_OUT=/out/junit.xml -v $PWD/tmp:/out \
+        -v &lt;path to credentials file&gt;:/inspec/gcp-creds.json \
+        mcsec.common.repositories.cloud.sap/inspec/profiles/sap-gcp:4.18.0
+
+# Azure:
+
+Detailed information on each Azure control, including remediations, can be found [here](/external/compliance_scanning/minerva_azure_controls)
+
+## Controls:
+
+import controlsDataAzure from "../../../../data/json/sapAzure.json";
+export const AzureControlsTable = () => {
+  const controls = [...controlsDataAzure.controls];
+  return (
+    <table>
+      <thead>
+        <tr>
+          <th>Inspec Control</th>
+          <th>SGS Reference Link</th>
+          <th>Information</th>
+        </tr>
+      </thead>
+      <tbody>
+        {controls.map((control) => (
+          <tr key={control.id}>
+            <td>{control.id}</td>
+            <td>
+              <a href={"https://wiki.wdf.sap.corp/wiki/x/Ckc3c"}>
+                sgs wiki link
+              </a>
+            </td>
+            <td>{control.title}</td>
+          </tr>
+        ))}
+      </tbody>
+    </table>
+  );
+};
+
+<AzureControlsTable />
+
+## Required Information:
+
+| Name                  | Additional Info                    |
+| --------------------- | ---------------------------------- |
+| AZURE_CLIENT_SECRET   | Client Secret for your service key |
+| AZURE_CLIENT_ID       | Client ID for your service key     |
+| AZURE_TENANT_ID       | Tenant ID associated with Azure AD |
+| AZURE_SUBSCRIPTION_ID | Azure Subscription ID              |
+
+## Required Service account & Permissions
+
+In order to run these scans, we recommend creating a service account / SPN which has the **Reader** role.
+
+## Example run with JSON reporting:
+
+    docker pull mcsec.common.repositories.cloud.sap/inspec/profiles/sap-azure:4.19.0
+
+    docker run -it --rm \
+        -e AZURE_CLIENT_SECRET=$AZURE_CLIENT_SECRET -e AZURE_CLIENT_ID=$AZURE_CLIENT_ID \
+        -e AZURE_TENANT_ID=$AZURE_TENANT_ID -e AZURE_SUBSCRIPTION_ID=$AZURE_SUBSCRIPTION_ID \
+        -e JSON_OUT=/out/out.json -v $PWD/tmp:/out \
+        mcsec.common.repositories.cloud.sap/inspec/profiles/sap-azure:4.19.0
+
+# AWS:
+
+Detailed information on each AWS control, including remediations, can be found [here](/external/compliance_scanning/minerva_aws_controls)
+
+## Controls:
+
+import controlsDataAWS from "../../../../data/json/sapAWS.json";
+export const AWSControlsTable = () => {
+  const controls = [...controlsDataAWS.controls];
+  return (
+    <table>
+      <thead>
+        <tr>
+          <th>Inspec Control</th>
+          <th>SGS Reference Link</th>
+          <th>Information</th>
+        </tr>
+      </thead>
+      <tbody>
+        {controls.map((control) => (
+          <tr key={control.id}>
+            <td>{control.id}</td>
+            <td>
+              <a href={"https://wiki.wdf.sap.corp/wiki/x/-0JAc"}>
+                sgs wiki link
+              </a>
+            </td>
+            <td>{control.title}</td>
+          </tr>
+        ))}
+      </tbody>
+    </table>
+  );
+};
+
+<AWSControlsTable />
+
+## Required Information:
+
+| Name                  | Additional Info                                                                                                                                                                    | Relevant Documentation                                                                                       |
+| --------------------- | ---------------------------------------------------------------------------------------------------------------------------------------------------------------------------------- | ------------------------------------------------------------------------------------------------------------ |
+| AWS_MASTER_ACCOUNT_ID | This is the 12 digit number - NOT the Organization ID. This is also NOT the account ID you wish to scan. The Account ID is determined from the access key and secret key provided. | [View Organization Data](https://docs.aws.amazon.com/organizations/latest/userguide/orgs_manage_org_details) |
+| AWS_ACCESS_KEY_ID     | Access key for your service account                                                                                                                                                |                                                                                                              |
+| AWS_SECRET_ACCESS_KEY | Secret access key for your service account                                                                                                                                         |                                                                                                              |
+| AWS_SESSION_TOKEN     | Required if your service account uses MFA                                                                                                                                          |                                                                                                              |
+| AWS_REGION            | All regions will be looped through for AWS, but specify a default one here (i.e. us-east-1)                                                                                        |                                                                                                              |
+
+## Required Service account & Permissions
+
+In order to run these scans, we recommend creating a new permissions group with the following policy:
+
+```
+{
+    "Version": "2012-10-17",
+    "Statement": [
+        {
+            "Effect": "Allow",
+            "Action": [
+                "aws-portal:ViewBilling",
+                "aws-portal:ViewUsage",
+                "autoscaling:Describe*",
+                "cloudformation:DescribeStacks",
+                "cloudformation:DescribeStackEvents",
+                "cloudformation:DescribeStackResources",
+                "cloudformation:GetTemplate",
+                "cloudfront:Get*",
+                "cloudfront:List*",
+                "cloudtrail:DescribeTrails",
+                "cloudwatch:Describe*",
+                "cloudwatch:Get*",
+                "cloudwatch:List*",
+                "dynamodb:GetItem",
+                "dynamodb:BatchGetItem",
+                "dynamodb:Query",
+                "dynamodb:Scan",
+                "dynamodb:DescribeTable",
+                "dynamodb:ListTables",
+                "ec2:Describe*",
+                "ecr:DescribeRepositories",
+                "ecr-public:DescribeRepositories",
+                "elasticache:Describe*",
+                "elasticbeanstalk:Check*",
+                "elasticbeanstalk:Describe*",
+                "elasticbeanstalk:List*",
+                "elasticbeanstalk:RequestEnvironmentInfo",
+                "elasticbeanstalk:RetrieveEnvironmentInfo",
+                "elasticloadbalancing:Describe*",
+                "elasticmapreduce:ListClusters",
+                "iam:List*",
+                "iam:Get*",
+                "kms:ListKeys",
+                "kms:DescribeKey",
+                "route53:Get*",
+                "route53:List*",
+                "rds:Describe*",
+                "s3:Get*",
+                "s3:List*",
+                "sdb:GetAttributes",
+                "sdb:List*",
+                "sdb:Select*",
+                "ses:Get*",
+                "ses:List*",
+                "sns:Get*",
+                "sns:List*",
+                "sqs:GetQueueAttributes",
+                "sqs:ListQueues",
+                "sqs:ReceiveMessage",
+                "storagegateway:List*",
+                "storagegateway:Describe*"
+            ],
+            "Resource": "*"
+        }
+    ]
+}
+```
+
+When applied to a service account that will grant the user the ability to get and list resources, which is needed for the inspec scan.
+
+## Example run with HTML reporting:
+
+    docker pull mcsec.common.repositories.cloud.sap/inspec/profiles/sap-aws:4.21.0
+
+    docker run -it --rm \
+        -e AWS_MASTER_ACCOUNT_ID=$AWS_MASTER_ACCOUNT_ID \
+        -e AWS_ACCESS_KEY_ID=$AWS_ACCESS_KEY_ID \
+        -e AWS_SECRET_ACCESS_KEY=$AWS_SECRET_ACCESS_KEY \
+        -e AWS_SESSION_TOKEN=$AWS_SESSION_TOKEN \ (Optional - only included if account uses session token)
+        -e AWS_REGION=$AWS_REGION \
+        -e HTML_OUT=/out/out -v $PWD/tmp:/out \
+        mcsec.common.repositories.cloud.sap/inspec/profiles/sap-aws:4.21.0
+
+## Consideration for running multi-account scans
+
+### Assume role
+
+For each of the accounts you need to scan you need to assume a role. To assume a role, please refer to the AWS documentation on [assuming roles](https://docs.aws.amazon.com/cli/latest/reference/sts/assume-role). For the assume role function, you will need to provide the access key and secret access key for an IAM user in the master account. Below is an example of an assume role command:
+
+```
+aws sts assume-role --role-arn "arn:aws:iam::123456789012:role/example-role" --role-session-name example-scanning-session
+```
+
+And this is a sample of the output from running the command:
+
+```
+{
+    "AssumedRoleUser": {
+        "AssumedRoleId": "AROA3XFRBF535PLBIFPI4:s3-access-example",
+        "Arn": "arn:aws:sts::123456789012:assumed-role/xaccounts3access/s3-access-example"
+    },
+    "Credentials": {
+        "SecretAccessKey": "9drTJvcXLB89EXAMPLELB8923FB892xMFI",
+        "SessionToken": "AQoXdzELDDY//////////wEaoAK1wvxJY12r2IrDFT2IvAzTCn3zHoZ7YNtpiQLF0MqZye/qwjzP2iEXAMPLEbw/m3hsj8VBTkPORGvr9jM5sgP+w9IZWZnU+LWhmg+a5fDi2oTGUYcdg9uexQ4mtCHIHfi4citgqZTgco40Yqr4lIlo4V2b2Dyauk0eYFNebHtYlFVgAUj+7Indz3LU0aTWk1WKIjHmmMCIoTkyYp/k7kUG7moeEYKSitwQIi6Gjn+nyzM+PtoA3685ixzv0R7i5rjQi0YE0lf1oeie3bDiNHncmzosRM6SFiPzSvp6h/32xQuZsjcypmwsPSDtTPYcs0+YN/8BRi2/IcrxSpnWEXAMPLEXSDFTAQAM6Dl9zR0tXoybnlrZIwMLlMi1Kcgo5OytwU=",
+        "Expiration": "2016-03-15T00:05:07Z",
+        "AccessKeyId": "ASIAJEXAMPLEXEG2JICEA"
+    }
+}
+```
+
+### Running the scans
+
+Once you have assumed a role, you will be given a JSON object containing an access key,secret access key and token (token only returned if you are using MFA). These are the credentials you will need to provide to the container to scan the individual accounts.
+
+# AliCloud:
+
+Detailed information on each AliCloud control, including remediations, can be found [here](/external/compliance_scanning/minerva_alicloud_controls)
+
+## Controls:
+
+import controlsDataAlicloud from "../../../../data/json/sapAlicloud.json";
+export const AlicloudControlsTable = () => {
+  const controls = [...controlsDataAlicloud.controls];
+  return (
+    <table>
+      <thead>
+        <tr>
+          <th>Inspec Control</th>
+          <th>SGS Reference Link</th>
+          <th>Information</th>
+        </tr>
+      </thead>
+      <tbody>
+        {controls.map((control) => (
+          <tr key={control.id}>
+            <td>{control.id}</td>
+            <td>
+              <a href={"https://wiki.wdf.sap.corp/wiki/x/XLjGe"}>
+                sgs wiki link
+              </a>
+            </td>
+            <td>{control.title}</td>
+          </tr>
+        ))}
+      </tbody>
+    </table>
+  );
+};
+
+<AlicloudControlsTable />
+
+## Required Information:
+
+| Name                | Additional Info                     |
+| ------------------- | ----------------------------------- |
+| ALICLOUD_ACCESS_KEY | Access key for your service account |
+| ALICLOUD_SECRET_KEY | Secret key for your service account |
+| ALICLOUD_REGION     | Region for your service account     |
+
+## Example run with HTML reporting:
+
+    docker pull mcsec.common.repositories.cloud.sap/inspec/profiles/sap-alicloud:4.19.0
+
+    docker run -it --rm \
+        -e ALICLOUD_ACCESS_KEY=$ALICLOUD_ACCESS_KEY \
+        -e ALICLOUD_SECRET_KEY=$ALICLOUD_SECRET_KEY \
+        -e ALICLOUD_REGION=$ALICLOUD_REGION \
+        -e HTML_OUT=/out/out -v $PWD/tmp:/out \
+        mcsec.common.repositories.cloud.sap/inspec/profiles/sap-alicloud:4.19.0

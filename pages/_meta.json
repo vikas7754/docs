@@ -1,0 +1,17 @@
+{
+  "index": "Home",
+  "external": "External Documentation",
+  "internal": "Internal Documentation",
+  "faq": "FAQ",
+  "blogs": "Blogs",
+  "about": {
+    "title": "About",
+    "type": "page"
+  },
+  "contact": {
+    "title": "Contact ↗",
+    "type": "page",
+    "href": "https://github.tools.sap/mce/devsecops-new-docs/issues",
+    "newWindow": true
+  }
+}

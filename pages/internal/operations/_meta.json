@@ -1,0 +1,15 @@
+{
+  "orca": "Orca",
+  "calm": "Calm",
+  "exceptions": "Exceptions",
+  "chef_ops": "Chef Ops",
+  "incident_management": "Incident Management",
+  "docs_howto": "Contributing to our Docs",
+  "hyperscaler_acct_list": "Hyperscalers Security Engineering & Operations (HSEO) Account List and Usage",
+  "prisma_ops": "Prisma Ops",
+  "service_now": "Service Now",
+  "elastic": "Elastic",
+  "GCPKeyRotationDocumentation": "GCP Key Rotation",
+  "cloud_service_provider_certifications": "Cloud Service Provider Certifications: Administrative Tasks",
+  "sprint_operations_tracking": "Sprint Operations Tracking"
+}

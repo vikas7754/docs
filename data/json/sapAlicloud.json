@@ -1,0 +1,321 @@
+{
+  "name": "sap-alicloud",
+  "title": "SAP AliCloud compliance profile",
+  "maintainer": "SAP Multi-Cloud Security",
+  "copyright": "SAP Multi-Cloud Security",
+  "copyright_email": "tim.jones01@sap.com",
+  "license": "Apache-2.0",
+  "summary": "SAP AliCloud compliance profile",
+  "version": "4.19.0",
+  "supports": [{ "platform": "alicloud" }],
+  "depends": [
+    {
+      "name": "inspec-alicloud",
+      "url": "https://github.com/inspec/inspec-alicloud/archive/refs/tags/v0.10.8.tar.gz",
+      "status": "loaded"
+    }
+  ],
+  "controls": [
+    {
+      "title": "2.1 - SAP password policy must be enforced at Hyperscaler Org level for Alibaba Cloud",
+      "desc": "The Corporate Password policy (which is pushed by the SAP MutliCloud Team into the Hyperscaler Account at creation time) shall not be modified.\n  Therefore all local users must have an \"SAP password policy\" compliant password.\n  Setup the SAP Password Policy by configuring:\n  Check \"Requires at least one uppercase letter\"\n  Check \"Requires at least one lowercase letter\"\n  Check \"Requires at least one non-alphanumeric character\"\n  Check \"Requires at least one number\"\n  Set \"Minimum password length\" to 15 or greater\n  Set the following settings if applicable for your use case:\n  Set \"Number of passwords to remember\" to 15 or greater\n  Set \"Password expiration period (in days):\" to 90 days or lesser",
+      "descriptions": {
+        "default": "The Corporate Password policy (which is pushed by the SAP MutliCloud Team into the Hyperscaler Account at creation time) shall not be modified.\n  Therefore all local users must have an \"SAP password policy\" compliant password.\n  Setup the SAP Password Policy by configuring:\n  Check \"Requires at least one uppercase letter\"\n  Check \"Requires at least one lowercase letter\"\n  Check \"Requires at least one non-alphanumeric character\"\n  Check \"Requires at least one number\"\n  Set \"Minimum password length\" to 15 or greater\n  Set the following settings if applicable for your use case:\n  Set \"Number of passwords to remember\" to 15 or greater\n  Set \"Password expiration period (in days):\" to 90 days or lesser"
+      },
+      "impact": 0.8,
+      "refs": [],
+      "tags": {
+        "sgs_control_hash": "8ae223887226fcbd01722703b9830061",
+        "sgs_wiki_url": "https://wiki.wdf.sap.corp/wiki/x/XLjGe",
+        "remediation_steps": "  All Hyperscaler Account's password policies are managed by Multicloud Hyperscaler Team.\n  Therefore any remediation action required for this policy should be contacted to Multicloud Hyperscaler Team via ServiceNow Ticket\n"
+      },
+      "code": "control '2_01_ra_2_password_policy' do\r\n  impact 0.8\r\n  title '2.1 - SAP password policy must be enforced at Hyperscaler Org level for Alibaba Cloud'\r\n  desc 'The Corporate Password policy (which is pushed by the SAP MutliCloud Team into the Hyperscaler Account at creation time) shall not be modified.\r\n  Therefore all local users must have an \"SAP password policy\" compliant password.\r\n  Setup the SAP Password Policy by configuring:\r\n  Check \"Requires at least one uppercase letter\"\r\n  Check \"Requires at least one lowercase letter\"\r\n  Check \"Requires at least one non-alphanumeric character\"\r\n  Check \"Requires at least one number\"\r\n  Set \"Minimum password length\" to 15 or greater\r\n  Set the following settings if applicable for your use case:\r\n  Set \"Number of passwords to remember\" to 15 or greater\r\n  Set \"Password expiration period (in days):\" to 90 days or lesser'\r\n  \r\n  tag sgs_control_hash: '8ae223887226fcbd01722703b9830061'\r\n  tag sgs_wiki_url: 'https://wiki.wdf.sap.corp/wiki/x/XLjGe'\r\n\r\n  tag remediation_steps: <<-EOF\r\n  All Hyperscaler Account's password policies are managed by Multicloud Hyperscaler Team.\r\n  Therefore any remediation action required for this policy should be contacted to Multicloud Hyperscaler Team via ServiceNow Ticket\r\n  EOF\r\n  \r\n  describe alicloud_ram_password_policy do\r\n    it { should exist }\r\n    its('require_uppercase_characters') { should eq true }\r\n    its('require_lowercase_characters') { should eq true }\r\n    its('require_symbols') { should eq true }\r\n    its('require_numbers') { should eq true }\r\n    its('minimum_password_length') { should be >= 15 }\r\n    its('password_reuse_prevention') { should be >= 15 }\r\n    its('max_password_age') { should be <= 90 }\r\n  end\r\nend\r\n",
+      "source_location": { "ref": "./controls/2_01.rb", "line": 1 },
+      "id": "2_01_ra_2_password_policy"
+    },
+    {
+      "title": "2.1 - Alibaba Cloud Access keys should be rotated every 90 days or less",
+      "desc": "Access keys consist of an access key ID and secret access key, which are\n  used to sign programmatic requests that you make to AliCloud. Rotating access keys\n  will reduce the window of opportunity for an access key that is associated with a\n  compromised or terminated account to be used.\n  Access Keys:\n      Access keys should be removed if they have not been used for 90 days or greater.\n      Additionally, access keys should be rotated after 90 days at least.",
+      "descriptions": {
+        "default": "Access keys consist of an access key ID and secret access key, which are\n  used to sign programmatic requests that you make to AliCloud. Rotating access keys\n  will reduce the window of opportunity for an access key that is associated with a\n  compromised or terminated account to be used.\n  Access Keys:\n      Access keys should be removed if they have not been used for 90 days or greater.\n      Additionally, access keys should be rotated after 90 days at least."
+      },
+      "impact": 0.5,
+      "refs": [],
+      "tags": {
+        "sgs_control_hash": "8ae223887226fcbd01722703b9830076",
+        "sgs_wiki_url": "https://wiki.wdf.sap.corp/wiki/x/XLjGe",
+        "remediation_steps": "  1.  Log in to Alibaba Cloud Portal.\n  2.  Go to RAM console (or search for Resource Access Management in the search bar).\n  3.  Under Identities, click Users.\n  4.  In the User Logon Name/Display Name column, click the username mentioned in the alert.\n  5.  In the User AccessKeys section, click Create AccessKey > Click OK.\n  6.  Be sure to update all applications and systems to use the new AccessKey pair.\n  7.  Make sure to disable the original AccessKey pair by performing the steps below:\n\n        a.  Go to RAM console (or search for Resource Access Management in the search bar).\n        \n        b.  Under Identities, click Users.\n        \n        c.  In the User Logon Name/Display Name column, click the username mentioned in the alert.\n        \n        d.  In the User AccessKeys section, find the Access Key that caused the alert >  click Disable.\n  8.  Confirm that your applications and systems are working after making the above changes.\n  9.  After the above steps are done, please delete the original AccessKey pair by performing the steps below:\n        \n        a.  Go to RAM console (or search for Resource Access Management in the search bar).\n        \n        b.  Under Identities, click Users.\n        \n        c.  In the User Logon Name/Display Name column, click the username mentioned in the alert.\n        \n        d.  In the User AccessKeys section, find the Access Key that caused the alert > Click Delete.\n        \n        e.  In the dialog box that appears, select I am aware of the risk > Confirm the deletion.\n  10. Click OK.\n"
+      },
+      "code": "control '2_01_key_rotation' do\r\n  impact 0.5\r\n  title '2.1 - Alibaba Cloud Access keys should be rotated every 90 days or less'\r\n  desc 'Access keys consist of an access key ID and secret access key, which are\r\n  used to sign programmatic requests that you make to AliCloud. Rotating access keys\r\n  will reduce the window of opportunity for an access key that is associated with a\r\n  compromised or terminated account to be used.\r\n  Access Keys:\r\n      Access keys should be removed if they have not been used for 90 days or greater.\r\n      Additionally, access keys should be rotated after 90 days at least.'\r\n  tag sgs_control_hash: '8ae223887226fcbd01722703b9830076'\r\n  tag sgs_wiki_url: 'https://wiki.wdf.sap.corp/wiki/x/XLjGe'\r\n\r\n  tag remediation_steps: <<-EOF\r\n  1.  Log in to Alibaba Cloud Portal.\r\n  2.  Go to RAM console (or search for Resource Access Management in the search bar).\r\n  3.  Under Identities, click Users.\r\n  4.  In the User Logon Name/Display Name column, click the username mentioned in the alert.\r\n  5.  In the User AccessKeys section, click Create AccessKey > Click OK.\r\n  6.  Be sure to update all applications and systems to use the new AccessKey pair.\r\n  7.  Make sure to disable the original AccessKey pair by performing the steps below:\r\n\r\n        a.  Go to RAM console (or search for Resource Access Management in the search bar).\r\n        \r\n        b.  Under Identities, click Users.\r\n        \r\n        c.  In the User Logon Name/Display Name column, click the username mentioned in the alert.\r\n        \r\n        d.  In the User AccessKeys section, find the Access Key that caused the alert >  click Disable.\r\n  8.  Confirm that your applications and systems are working after making the above changes.\r\n  9.  After the above steps are done, please delete the original AccessKey pair by performing the steps below:\r\n        \r\n        a.  Go to RAM console (or search for Resource Access Management in the search bar).\r\n        \r\n        b.  Under Identities, click Users.\r\n        \r\n        c.  In the User Logon Name/Display Name column, click the username mentioned in the alert.\r\n        \r\n        d.  In the User AccessKeys section, find the Access Key that caused the alert > Click Delete.\r\n        \r\n        e.  In the dialog box that appears, select I am aware of the risk > Confirm the deletion.\r\n  10. Click OK.\r\n  EOF\r\n\r\n  scan_date = ENV['MINERVA_SCHEDULED_SCAN_DATE'] ? Date.parse(ENV['MINERVA_SCHEDULED_SCAN_DATE']) : Date.today\r\n  alicloud_ram_users.user_names.each do |user_name|\r\n    alicloud_access_keys(user_name: user_name).entries.each do |access_key|\r\n      create_date = Date.parse(access_key.create_date)\r\n      describe \"Age of Access Key ID: #{access_key.access_key_id} for RAM User: #{user_name}\" do\r\n        subject { scan_date.mjd-(create_date).mjd }\r\n        it { should be <= 90 }\r\n      end\r\n    end\r\n  end\r\nend",
+      "source_location": { "ref": "./controls/2_01.rb", "line": 36 },
+      "id": "2_01_key_rotation"
+    },
+    {
+      "title": "2.3 - Alibaba Cloud Multi-Factor Authentication (MFA) must be enabled for all RAM user accounts",
+      "desc": "Multi-Factor Authentication (MFA), like the SAP used RSA SecurID, \n  adds an extra layer of protection on top of a username and password. \n  With 2FA enabled, when a user signs into an hyperscaler account, \n  they will be prompted for their username and password as well as for an authentication code from their 2FA device.\n  All Alibaba Cloud RAM user accounts must have MFA enabled. \n  According to chapter 8 of the MFA - Low Level Design, at least a Medium Trust Level must be configured.",
+      "descriptions": {
+        "default": "Multi-Factor Authentication (MFA), like the SAP used RSA SecurID, \n  adds an extra layer of protection on top of a username and password. \n  With 2FA enabled, when a user signs into an hyperscaler account, \n  they will be prompted for their username and password as well as for an authentication code from their 2FA device.\n  All Alibaba Cloud RAM user accounts must have MFA enabled. \n  According to chapter 8 of the MFA - Low Level Design, at least a Medium Trust Level must be configured."
+      },
+      "impact": 0.8,
+      "refs": [],
+      "tags": {
+        "sgs_control_hash": "8ae223887226fcbd01722703b9830088",
+        "sgs_wiki_url": "https://wiki.wdf.sap.corp/wiki/x/XLjGe",
+        "remediation_steps": "  1.  Log in to Alibaba Cloud Portal \n  2.  Go to RAM console (or search for Resource Access Management in the search bar).\n  3.  Under Identities, click Users > Click the username mentioned in the alert.\n  4.  In the 'Authentication' tab, Click on 'Modify Logon Settings'.\n  5.  Choose the 'Required' radio button for 'Enable MFA'  > Click 'OK'.\n  7.  Click 'Close'.\n"
+      },
+      "code": "control '2_03_mfa_enabled' do\r\n  impact 0.8\r\n  title '2.3 - Alibaba Cloud Multi-Factor Authentication (MFA) must be enabled for all RAM user accounts'\r\n  desc 'Multi-Factor Authentication (MFA), like the SAP used RSA SecurID, \r\n  adds an extra layer of protection on top of a username and password. \r\n  With 2FA enabled, when a user signs into an hyperscaler account, \r\n  they will be prompted for their username and password as well as for an authentication code from their 2FA device.\r\n  All Alibaba Cloud RAM user accounts must have MFA enabled. \r\n  According to chapter 8 of the MFA - Low Level Design, at least a Medium Trust Level must be configured.'\r\n  tag sgs_control_hash: '8ae223887226fcbd01722703b9830088'\r\n  tag sgs_wiki_url: 'https://wiki.wdf.sap.corp/wiki/x/XLjGe'\r\n\r\n  tag remediation_steps: <<-EOF\r\n  1.  Log in to Alibaba Cloud Portal \r\n  2.  Go to RAM console (or search for Resource Access Management in the search bar).\r\n  3.  Under Identities, click Users > Click the username mentioned in the alert.\r\n  4.  In the 'Authentication' tab, Click on 'Modify Logon Settings'.\r\n  5.  Choose the 'Required' radio button for 'Enable MFA'  > Click 'OK'.\r\n  7.  Click 'Close'.\r\n\tEOF\r\n\r\n  sso_status = alicloud_ims_sso.sso_enabled\r\n\r\n  if sso_status\r\n    describe 'SSO is enabled' do\r\n      skip 'No need to verify MFA settings for this account as it enables SSO.'\r\n    end\r\n  else\r\n    alicloud_ram_users.entries.each do |ram_user|\r\n      next unless ram_user.has_console_access == true\r\n      describe \"RAM User Name: #{ram_user[:user_name]} MFA enabled\" do\r\n        subject { ram_user[:has_mfa_enabled] }\r\n        it { should eq true }\r\n      end\r\n    end\r\n  end\r\nend\r\n",
+      "source_location": { "ref": "./controls/2_03.rb", "line": 1 },
+      "id": "2_03_mfa_enabled"
+    },
+    {
+      "title": "5.1 - Alibaba Cloud Object Storage Service (OSS) buckets must not be publicly accessible",
+      "desc": "It must be ensured that OSS buckets are never accessible to all users on the Internet.\n  This also applies for the OSS bucket that is used to store the ActionTrail logs.",
+      "descriptions": {
+        "default": "It must be ensured that OSS buckets are never accessible to all users on the Internet.\n  This also applies for the OSS bucket that is used to store the ActionTrail logs."
+      },
+      "impact": 0.8,
+      "refs": [],
+      "tags": {
+        "sgs_control_hash": "8ae223887226fcbd01722703b9830072",
+        "sgs_wiki_url": "https://wiki.wdf.sap.corp/wiki/x/XLjGe",
+        "remediation_steps": "  1.  Log in to Alibaba Cloud Portal.\n  2.  Go to Object Storage Service (or search for Object Storage Service in the search bar).\n  3.  Click on Buckets.\n  4.  Click on the name of the bucket that caused the alert.\n  5.  In the 'Access Control' tab, Click on 'Access Control List (ACL)'.\n  6.  In 'Bucket ACL', Click on 'Configure', Choose 'Private' option.\n  7.  Click 'Save'.\n"
+      },
+      "code": "control '5_01_public_buckets_not_allowed' do\r\n  impact 0.8\r\n  title '5.1 - Alibaba Cloud Object Storage Service (OSS) buckets must not be publicly accessible'\r\n  desc 'It must be ensured that OSS buckets are never accessible to all users on the Internet.\r\n  This also applies for the OSS bucket that is used to store the ActionTrail logs.'\r\n  tag sgs_control_hash: '8ae223887226fcbd01722703b9830072'\r\n  tag sgs_wiki_url: 'https://wiki.wdf.sap.corp/wiki/x/XLjGe'\r\n\r\n  tag remediation_steps: <<-EOF\r\n  1.  Log in to Alibaba Cloud Portal.\r\n  2.  Go to Object Storage Service (or search for Object Storage Service in the search bar).\r\n  3.  Click on Buckets.\r\n  4.  Click on the name of the bucket that caused the alert.\r\n  5.  In the 'Access Control' tab, Click on 'Access Control List (ACL)'.\r\n  6.  In 'Bucket ACL', Click on 'Configure', Choose 'Private' option.\r\n  7.  Click 'Save'.\r\n\tEOF\r\n\r\n  alicloud_regions.region_names.each do |region_name|\r\n    alicloud_oss_buckets(region: region_name).bucket_names.each do |bucket_name|\r\n      oss_bucket = alicloud_oss_bucket(bucket_name: bucket_name, region: region_name)\r\n      next unless oss_bucket.exists?\r\n      \r\n      describe oss_bucket do\r\n        it { should_not be_public }\r\n      end\r\n    end\r\n  end\r\nend\r\n",
+      "source_location": { "ref": "./controls/5_01.rb", "line": 1 },
+      "id": "5_01_public_buckets_not_allowed"
+    },
+    {
+      "title": "5.2 - Alibaba Cloud Object Storage Service (OSS) buckets must be encrypted at rest",
+      "desc": "Server-side encryption must be enabled for OSS buckets to improve\n  data security without making changes to your business or applications.\n  OSS encrypts user data when writing the data into the hard disks deployed\n  in the data center and automatically decrypts the data when it is accessed.",
+      "descriptions": {
+        "default": "Server-side encryption must be enabled for OSS buckets to improve\n  data security without making changes to your business or applications.\n  OSS encrypts user data when writing the data into the hard disks deployed\n  in the data center and automatically decrypts the data when it is accessed."
+      },
+      "impact": 0.8,
+      "refs": [],
+      "tags": {
+        "sgs_control_hash": "8ae223887226fcbd01722703b9830071",
+        "sgs_wiki_url": "https://wiki.wdf.sap.corp/wiki/x/XLjGe",
+        "remediation_steps": "  1.  Log in to Alibaba Cloud Portal.\n  2.  Go to Object Storage Service (or search for Object Storage Service in the search bar).\n  3.  In the left-side, click Buckets > Click on the Bucket Name mentioned in the alert.\n  4.  Click Basic Settings > In the Server-side Encryption Section, Click Configure.\n  5.  For Encryption Method, select either OSS-Managed or KMS (choose one which applies for your use case) and then select the relavent Encryption Algorithm.\n  6.  Click Save.\n"
+      },
+      "code": "control '5_02_bucket_encryption_enabled' do\r\n  impact 0.8\r\n  title '5.2 - Alibaba Cloud Object Storage Service (OSS) buckets must be encrypted at rest'\r\n  desc 'Server-side encryption must be enabled for OSS buckets to improve\r\n  data security without making changes to your business or applications.\r\n  OSS encrypts user data when writing the data into the hard disks deployed\r\n  in the data center and automatically decrypts the data when it is accessed.'\r\n  tag sgs_control_hash: '8ae223887226fcbd01722703b9830071'\r\n  tag sgs_wiki_url: 'https://wiki.wdf.sap.corp/wiki/x/XLjGe'\r\n\r\n  tag remediation_steps: <<-EOF\r\n  1.  Log in to Alibaba Cloud Portal.\r\n  2.  Go to Object Storage Service (or search for Object Storage Service in the search bar).\r\n  3.  In the left-side, click Buckets > Click on the Bucket Name mentioned in the alert.\r\n  4.  Click Basic Settings > In the Server-side Encryption Section, Click Configure.\r\n  5.  For Encryption Method, select either OSS-Managed or KMS (choose one which applies for your use case) and then select the relavent Encryption Algorithm.\r\n  6.  Click Save.\r\n  EOF\r\n\r\n  alicloud_regions.region_names.each do |region_name|\r\n    alicloud_oss_buckets(region: region_name).bucket_names.each do |bucket_name|\r\n      oss_bucket = alicloud_oss_bucket(bucket_name: bucket_name, region: region_name)\r\n      next unless oss_bucket.exists?\r\n\r\n      describe oss_bucket do\r\n        it { should have_default_encryption_enabled }\r\n      end\r\n    end\r\n  end\r\nend\r\n",
+      "source_location": { "ref": "./controls/5_02.rb", "line": 1 },
+      "id": "5_02_bucket_encryption_enabled"
+    },
+    {
+      "title": "5.2 - Alibaba Cloud Block Storage disks must be encrypted at rest",
+      "desc": "\"Data Disk\" encryption must be enabled to improve data security without making changes to your business or applications. \n  Snapshots created from encrypted disks and new disks created from these snapshots are automatically encrypted.\n  The \"System Disk\" must be encrypted as well.",
+      "descriptions": {
+        "default": "\"Data Disk\" encryption must be enabled to improve data security without making changes to your business or applications. \n  Snapshots created from encrypted disks and new disks created from these snapshots are automatically encrypted.\n  The \"System Disk\" must be encrypted as well."
+      },
+      "impact": 0.8,
+      "refs": [],
+      "tags": {
+        "sgs_control_hash": "8ae223887226fcbd01722703b9830070",
+        "sgs_wiki_url": "https://wiki.wdf.sap.corp/wiki/x/XLjGe",
+        "remediation_steps": "  In Alibaba Cloud, a disk can only be encrypted at the time of disk creation. Please create a new disk with encryption and then migrate all required disk data from the unencrypted disk to the new encrypted disk.\n\n  To create a new disk with encryption, please do the following steps:\n\n  1.  Login to Alibaba Cloud Portal.\n  2.  Click on Elastic Compute Service (or search for Elastic Compute Service in the search bar).\n  3.  Under Storage & Snapshots, click on Disks  > Click Create Disk > Check the Disk Encryption box.\n  4.  Fill in the appropriate fields > Click Preview.\n  5.  Click Create.\n\n  Note: Before running the above steps please ensure that the team responsible for the disk are aware of this activity to avoid any outage.\n"
+      },
+      "code": "control '5_02_disk_encryption_enabled' do\r\n  impact 0.8\r\n  title '5.2 - Alibaba Cloud Block Storage disks must be encrypted at rest'\r\n  desc '\"Data Disk\" encryption must be enabled to improve data security without making changes to your business or applications. \r\n  Snapshots created from encrypted disks and new disks created from these snapshots are automatically encrypted.\r\n  The \"System Disk\" must be encrypted as well.'\r\n  tag sgs_control_hash: '8ae223887226fcbd01722703b9830070'\r\n  tag sgs_wiki_url: 'https://wiki.wdf.sap.corp/wiki/x/XLjGe'\r\n\r\n  tag remediation_steps: <<-EOF\r\n  In Alibaba Cloud, a disk can only be encrypted at the time of disk creation. Please create a new disk with encryption and then migrate all required disk data from the unencrypted disk to the new encrypted disk.\r\n\r\n  To create a new disk with encryption, please do the following steps:\r\n\r\n  1.  Login to Alibaba Cloud Portal.\r\n  2.  Click on Elastic Compute Service (or search for Elastic Compute Service in the search bar).\r\n  3.  Under Storage & Snapshots, click on Disks  > Click Create Disk > Check the Disk Encryption box.\r\n  4.  Fill in the appropriate fields > Click Preview.\r\n  5.  Click Create.\r\n\r\n  Note: Before running the above steps please ensure that the team responsible for the disk are aware of this activity to avoid any outage.\r\n  EOF\r\n\r\n  alicloud_regions.region_names.each do |region_name|\r\n    alicloud_disks(region: region_name).entries.each do |disk|\r\n      describe \"ECS Disk: ID: #{disk[:id]} Name: #{disk[:name]} in #{region_name} encrypted is expected to eq true\" do\r\n        subject { disk[:encrypted] }\r\n        it { should eq true }\r\n      end\r\n    end\r\n  end\r\nend",
+      "source_location": { "ref": "./controls/5_02.rb", "line": 32 },
+      "id": "5_02_disk_encryption_enabled"
+    },
+    {
+      "title": "6.1.1 - Alibaba Cloud Security Groups must restrict traffic from the Internet to blocklisted Database (DB) ports",
+      "desc": "DB Servers contain sensitive data and should not be exposed to any direct traffic from Internet. \n  Specifically, inbound traffic from the Internet allowing access from arbitrary Internet IP addresses (0.0.0.0/0) to this port \n  increases the attack surface of the network and must not be allowed.\n  This policy identifies all the security groups, which do not restrict inbound traffic to the\n  following ports: (1433, 1434, 1521, 3306, 4333, 5432, 27017).",
+      "descriptions": {
+        "default": "DB Servers contain sensitive data and should not be exposed to any direct traffic from Internet. \n  Specifically, inbound traffic from the Internet allowing access from arbitrary Internet IP addresses (0.0.0.0/0) to this port \n  increases the attack surface of the network and must not be allowed.\n  This policy identifies all the security groups, which do not restrict inbound traffic to the\n  following ports: (1433, 1434, 1521, 3306, 4333, 5432, 27017)."
+      },
+      "impact": 0.8,
+      "refs": [],
+      "tags": {
+        "sgs_wiki_url": "https://wiki.wdf.sap.corp/wiki/x/XLjGe",
+        "remediation_steps": "  1.  Log in to Alibaba Cloud Portal.\n  2.  Go to Elastic Compute Service (or search for Elastic Computer Service in the search bar).\n  3.  In the left-side navigation pane, choose Network & Security > Security Groups.\n  4.  Select the reported security group and then click Add Rules in the Actions column.\n  5.  In Inbound tab, Select the rule having 'Action' as Allow, 'Authorization Object' as 0.0.0.0/0 and 'Port Range' value listed as any of the following: 5432, 3306, 4333, 1433, 1434, 1521, 27017 > Click Modify in the Actions column.\n  6.  Replace the value 0.0.0.0/0 with the correct IP address range.\n  7.  Click OK.\n"
+      },
+      "code": "control '6_01_01_db_ports' do\r\n  impact 0.8\r\n  title '6.1.1 - Alibaba Cloud Security Groups must restrict traffic from the Internet to blocklisted Database (DB) ports'\r\n  desc 'DB Servers contain sensitive data and should not be exposed to any direct traffic from Internet. \r\n  Specifically, inbound traffic from the Internet allowing access from arbitrary Internet IP addresses (0.0.0.0/0) to this port \r\n  increases the attack surface of the network and must not be allowed.\r\n  This policy identifies all the security groups, which do not restrict inbound traffic to the\r\n  following ports: (1433, 1434, 1521, 3306, 4333, 5432, 27017).'\r\n  tag sgs_wiki_url: 'https://wiki.wdf.sap.corp/wiki/x/XLjGe'\r\n\r\n  tag remediation_steps: <<-EOF\r\n  1.  Log in to Alibaba Cloud Portal.\r\n  2.  Go to Elastic Compute Service (or search for Elastic Computer Service in the search bar).\r\n  3.  In the left-side navigation pane, choose Network & Security > Security Groups.\r\n  4.  Select the reported security group and then click Add Rules in the Actions column.\r\n  5.  In Inbound tab, Select the rule having 'Action' as Allow, 'Authorization Object' as 0.0.0.0/0 and 'Port Range' value listed as any of the following: 5432, 3306, 4333, 1433, 1434, 1521, 27017 > Click Modify in the Actions column.\r\n  6.  Replace the value 0.0.0.0/0 with the correct IP address range.\r\n  7.  Click OK.\r\n\tEOF\r\n\r\n  sgs_exception_tag_values = %w(PostgreSQL MySQL MSSQL OracleSQL MongoDB)\r\n  alicloud_regions.region_names.each do |region_name|\r\n    alicloud_security_groups(region: region_name).entries.each do |sg_group|\r\n      next if sg_group.tags.any? { |tag| tag.select { |key, value| key == 'TagKey' && value == 'sec-by-def-network-exception' || key == 'TagValue' && sgs_exception_tag_values.any? { |protocol| value =~ /#{protocol}/ } }.count == 2 } #Alicloud resource pack returns Key,Tag differently than other hyperscalers so we have to use this method to match, we are using count==2 to match both key & values\r\n      describe alicloud_security_group(group_id: sg_group[:group_id], region: region_name) do\r\n        [5432, 3306, 4333, 1433, 1434, 1521, 27017].each do |db_port|\r\n          it { should_not allow_in(port: db_port, ipv4_range: '0.0.0.0/0') }\r\n          it { should_not allow_in(port: db_port, ipv6_range: '::/0') }\r\n        end\r\n      end\r\n    end\r\n  end\r\nend\r\n",
+      "source_location": { "ref": "./controls/6_01_01.rb", "line": 1 },
+      "id": "6_01_01_db_ports"
+    },
+    {
+      "title": "6.1.2 - Alibaba Cloud Security Groups must restrict traffic from the Internet to blocklisted Administrative ports",
+      "desc": "Security Groups are specific to a VPC Network. Each rule either allows or denies traffic when its conditions are met.\n  Its conditions allow to specify the type of traffic, such as ports and protocols, and the source or destination of the traffic, \n  including IP addresses, subnets, and instances. Administrative task must be done via encrypted communication channel over the\n  Internet (e.g. make use of Public Cloud Interconnect from SAP Corp).\n  \n  In addition, for Administrative ports the IPv4 range must be restricted (no 0.0.0.0/0 rule).\n  \n  RDP (3389),SSH (22),VNC (Listener: 5500, Server: 5900),RPC (135)",
+      "descriptions": {
+        "default": "Security Groups are specific to a VPC Network. Each rule either allows or denies traffic when its conditions are met.\n  Its conditions allow to specify the type of traffic, such as ports and protocols, and the source or destination of the traffic, \n  including IP addresses, subnets, and instances. Administrative task must be done via encrypted communication channel over the\n  Internet (e.g. make use of Public Cloud Interconnect from SAP Corp).\n  \n  In addition, for Administrative ports the IPv4 range must be restricted (no 0.0.0.0/0 rule).\n  \n  RDP (3389),SSH (22),VNC (Listener: 5500, Server: 5900),RPC (135)"
+      },
+      "impact": 0.8,
+      "refs": [],
+      "tags": {
+        "sgs_wiki_url": "https://wiki.wdf.sap.corp/wiki/x/XLjGe",
+        "remediation_steps": "  1.  Log in to Alibaba Cloud Portal.\n  2.  Go to Elastic Compute Service (or search for Elastic Computer Service in the search bar).\n  3.  In the left-side navigation pane, choose Network & Security > Security Groups.\n  4.  Select the reported security group and then click Add Rules in the Actions column.\n  5.  In Inbound tab, Select the rule having 'Action' as Allow, 'Authorization Object' as 0.0.0.0/0 and 'Port Range' value listed as any of the following: 22, 3389, 5500, 5900 and/or 135 > Click Modify in the Actions column.\n  6.  Replace the value 0.0.0.0/0 with the correct IP address range.\n  7.  Click OK.\n"
+      },
+      "code": "control '6_01_02_admin_ports' do\r\n  impact 0.8\r\n  title '6.1.2 - Alibaba Cloud Security Groups must restrict traffic from the Internet to blocklisted Administrative ports'\r\n  desc 'Security Groups are specific to a VPC Network. Each rule either allows or denies traffic when its conditions are met.\r\n  Its conditions allow to specify the type of traffic, such as ports and protocols, and the source or destination of the traffic, \r\n  including IP addresses, subnets, and instances. Administrative task must be done via encrypted communication channel over the\r\n  Internet (e.g. make use of Public Cloud Interconnect from SAP Corp).\r\n  \r\n  In addition, for Administrative ports the IPv4 range must be restricted (no 0.0.0.0/0 rule).\r\n  \r\n  RDP (3389),SSH (22),VNC (Listener: 5500, Server: 5900),RPC (135)'\r\n  tag sgs_wiki_url: 'https://wiki.wdf.sap.corp/wiki/x/XLjGe'\r\n\r\n  tag remediation_steps: <<-EOF\r\n  1.  Log in to Alibaba Cloud Portal.\r\n  2.  Go to Elastic Compute Service (or search for Elastic Computer Service in the search bar).\r\n  3.  In the left-side navigation pane, choose Network & Security > Security Groups.\r\n  4.  Select the reported security group and then click Add Rules in the Actions column.\r\n  5.  In Inbound tab, Select the rule having 'Action' as Allow, 'Authorization Object' as 0.0.0.0/0 and 'Port Range' value listed as any of the following: 22, 3389, 5500, 5900 and/or 135 > Click Modify in the Actions column.\r\n  6.  Replace the value 0.0.0.0/0 with the correct IP address range.\r\n  7.  Click OK.\r\n\tEOF\r\n  sgs_exception_tag_values = %w(RDP SSH VNC RPC)\r\n  alicloud_regions.region_names.each do |region_name|\r\n    alicloud_security_groups(region: region_name).entries.each do |sg_group|\r\n      next if sg_group.tags.any? { |tag| tag.select { |key, value| key == 'TagKey' && value == 'sec-by-def-network-exception' || key == 'TagValue' && sgs_exception_tag_values.any? { |protocol| value =~ /#{protocol}/ } }.count == 2 } #Alicloud resource pack returns Key,Tag differently than other hyperscalers so we have to use this method to match, we are using count==2 to match both key & values\r\n      describe alicloud_security_group(group_id: sg_group[:group_id], region: region_name) do\r\n        [3389, 22, 5500, 5900, 135].each do |admin_port|\r\n          it { should_not allow_in(port: admin_port, ipv4_range: '0.0.0.0/0') }\r\n          it { should_not allow_in(port: admin_port, ipv6_range: '::/0') }\r\n        end\r\n      end\r\n    end\r\n  end\r\nend\r\n",
+      "source_location": { "ref": "./controls/6_01_02.rb", "line": 1 },
+      "id": "6_01_02_admin_ports"
+    },
+    {
+      "title": "6.1.3 - Alibaba Cloud Security Groups should restrict traffic from the Internet to blocklisted Infrastructure ports",
+      "desc": "Infrastructure related tasks should not be done over the Internet. Inbound traffic from the Internet allowing access from \n  arbitrary Internet IP addresses (0.0.0.0/0 rule) should not be allowed. This increases the attack surface of the network.\n  The following ports should not be exposed towards the Internet: (25, 53, 67, 68, 110, 161, 162).",
+      "descriptions": {
+        "default": "Infrastructure related tasks should not be done over the Internet. Inbound traffic from the Internet allowing access from \n  arbitrary Internet IP addresses (0.0.0.0/0 rule) should not be allowed. This increases the attack surface of the network.\n  The following ports should not be exposed towards the Internet: (25, 53, 67, 68, 110, 161, 162)."
+      },
+      "impact": 0.5,
+      "refs": [],
+      "tags": {
+        "sgs_wiki_url": "https://wiki.wdf.sap.corp/wiki/x/XLjGe",
+        "remediation_steps": "  1.  Log in to Alibaba Cloud Portal.\n  2.  Go to Elastic Compute Service (or search for Elastic Computer Service in the search bar).\n  3.  In the left-side navigation pane, choose Network & Security > Security Groups.\n  4.  Select the reported security group and then click Add Rules in the Actions column.\n  5.  In Inbound tab, Select the rule having 'Action' as Allow, 'Authorization Object' as 0.0.0.0/0 and 'Port Range' value listed as any of the following: 53, 110, 25, 67, 68, 161, 162 > Click Modify in the Actions column.\n  6.  Replace the value 0.0.0.0/0 with the correct IP address range.\n  7.  Click OK.\n"
+      },
+      "code": "control '6_01_03_infra_ports' do\r\n  impact 0.5\r\n  title '6.1.3 - Alibaba Cloud Security Groups should restrict traffic from the Internet to blocklisted Infrastructure ports'\r\n  desc 'Infrastructure related tasks should not be done over the Internet. Inbound traffic from the Internet allowing access from \r\n  arbitrary Internet IP addresses (0.0.0.0/0 rule) should not be allowed. This increases the attack surface of the network.\r\n  The following ports should not be exposed towards the Internet: (25, 53, 67, 68, 110, 161, 162).'\r\n  tag sgs_wiki_url: 'https://wiki.wdf.sap.corp/wiki/x/XLjGe'\r\n\r\n  tag remediation_steps: <<-EOF\r\n  1.  Log in to Alibaba Cloud Portal.\r\n  2.  Go to Elastic Compute Service (or search for Elastic Computer Service in the search bar).\r\n  3.  In the left-side navigation pane, choose Network & Security > Security Groups.\r\n  4.  Select the reported security group and then click Add Rules in the Actions column.\r\n  5.  In Inbound tab, Select the rule having 'Action' as Allow, 'Authorization Object' as 0.0.0.0/0 and 'Port Range' value listed as any of the following: 53, 110, 25, 67, 68, 161, 162 > Click Modify in the Actions column.\r\n  6.  Replace the value 0.0.0.0/0 with the correct IP address range.\r\n  7.  Click OK.\r\n\tEOF\r\n\r\n  sgs_exception_tag_values = %w(DNS HTTP POP3 SMTP DHCP SNMP)\r\n  alicloud_regions.region_names.each do |region_name|\r\n    alicloud_security_groups(region: region_name).entries.each do |sg_group|\r\n      next if sg_group.tags.any? { |tag| tag.select { |key, value| key == 'TagKey' && value == 'sec-by-def-network-exception' || key == 'TagValue' && sgs_exception_tag_values.any? { |protocol| value =~ /#{protocol}/ } }.count == 2} #Alicloud resource pack returns Key,Tag differently than other hyperscalers so we have to use this method to match, we are using count==2 to match both key & values\r\n      describe alicloud_security_group(group_id: sg_group[:group_id], region: region_name) do\r\n        [53, 110, 25, 67, 68, 161, 162].each do |infra_port|\r\n          it { should_not allow_in(port: infra_port, ipv4_range: '0.0.0.0/0') }\r\n          it { should_not allow_in(port: infra_port, ipv6_range: '::/0') }\r\n        end\r\n      end\r\n    end\r\n  end\r\nend",
+      "source_location": { "ref": "./controls/6_01_03.rb", "line": 1 },
+      "id": "6_01_03_infra_ports"
+    },
+    {
+      "title": "6.1.4 - Alibaba Cloud Security Groups should restrict traffic from the Internet to blocklisted File Share ports",
+      "desc": "Network activities on file share ports over the Internet should not be done. Inbound traffic from the Internet allowing\n  access from arbitrary Internet IP addresses (0.0.0.0/0 rule) should not be allowed. This increases the attack surface of the network.\n  The following ports should not be exposed towards the Internet: (139, 445, 21, 69).",
+      "descriptions": {
+        "default": "Network activities on file share ports over the Internet should not be done. Inbound traffic from the Internet allowing\n  access from arbitrary Internet IP addresses (0.0.0.0/0 rule) should not be allowed. This increases the attack surface of the network.\n  The following ports should not be exposed towards the Internet: (139, 445, 21, 69)."
+      },
+      "impact": 0.5,
+      "refs": [],
+      "tags": {
+        "sgs_wiki_url": "https://wiki.wdf.sap.corp/wiki/x/XLjGe",
+        "remediation_steps": "  1.  Log in to Alibaba Cloud Portal.\n  2.  Go to Elastic Compute Service (or search for Elastic Computer Service in the search bar).\n  3.  In the left-side navigation pane, choose Network & Security > Security Groups.\n  4.  Select the reported security group and then click Add Rules in the Actions column.\n  5.  In Inbound tab, Select the rule having 'Action' as Allow, 'Authorization Object' as 0.0.0.0/0 and 'Port Range' value listed as any of the following: 139, 445, 21, 69 > Click Modify in the Actions column.\n  6.  Replace the value 0.0.0.0/0 with the correct IP address range.\n  7.  Click OK.\n"
+      },
+      "code": "control '6_01_04_fileshare_ports' do\r\n  impact 0.5\r\n  title '6.1.4 - Alibaba Cloud Security Groups should restrict traffic from the Internet to blocklisted File Share ports'\r\n  desc 'Network activities on file share ports over the Internet should not be done. Inbound traffic from the Internet allowing\r\n  access from arbitrary Internet IP addresses (0.0.0.0/0 rule) should not be allowed. This increases the attack surface of the network.\r\n  The following ports should not be exposed towards the Internet: (139, 445, 21, 69).'\r\n  tag sgs_wiki_url: 'https://wiki.wdf.sap.corp/wiki/x/XLjGe'\r\n\r\n  tag remediation_steps: <<-EOF\r\n  1.  Log in to Alibaba Cloud Portal.\r\n  2.  Go to Elastic Compute Service (or search for Elastic Computer Service in the search bar).\r\n  3.  In the left-side navigation pane, choose Network & Security > Security Groups.\r\n  4.  Select the reported security group and then click Add Rules in the Actions column.\r\n  5.  In Inbound tab, Select the rule having 'Action' as Allow, 'Authorization Object' as 0.0.0.0/0 and 'Port Range' value listed as any of the following: 139, 445, 21, 69 > Click Modify in the Actions column.\r\n  6.  Replace the value 0.0.0.0/0 with the correct IP address range.\r\n  7.  Click OK.\r\n\tEOF\r\n\r\n  sgs_exception_tag_values = %w(NetBIOS SMB FTP TFTP)\r\n  alicloud_regions.region_names.each do |region_name|\r\n    alicloud_security_groups(region: region_name).entries.each do |sg_group|\r\n      next if sg_group.tags.any? { |tag| tag.select { |key, value| key == 'TagKey' && value == 'sec-by-def-network-exception' || key == 'TagValue' && sgs_exception_tag_values.any? { |protocol| value =~ /#{protocol}/ } }.count == 2 } #Alicloud resource pack returns Key,Tag differently than other hyperscalers so we have to use this method to match, we are using count==2 to match both key & values\r\n      describe alicloud_security_group(group_id: sg_group[:group_id], region: region_name) do\r\n        [139, 445, 21, 69].each do |file_port|\r\n          it { should_not allow_in(port: file_port, ipv4_range: '0.0.0.0/0') }\r\n          it { should_not allow_in(port: file_port, ipv6_range: '::/0') }\r\n        end\r\n      end\r\n    end\r\n  end\r\nend\r\n",
+      "source_location": { "ref": "./controls/6_01_04.rb", "line": 1 },
+      "id": "6_01_04_fileshare_ports"
+    },
+    {
+      "title": "6.1.5 - Alibaba Cloud Security Groups must be configured to block traffic for Telnet and RSH ports",
+      "desc": "The bidirectional text-oriented terminal connection of Telnet port (23) or RSH port (514) is a deprecated / insecure \n  application layer protocol and must not be used in general.",
+      "descriptions": {
+        "default": "The bidirectional text-oriented terminal connection of Telnet port (23) or RSH port (514) is a deprecated / insecure \n  application layer protocol and must not be used in general."
+      },
+      "impact": 0.8,
+      "refs": [],
+      "tags": {
+        "sgs_wiki_url": "https://wiki.wdf.sap.corp/wiki/x/XLjGe",
+        "remediation_steps": "  1.  Log in to Alibaba Cloud Portal.\n  2.  Go to Elastic Compute Service.\n  3.  Under Network & Security > click Security Groups.\n  4.  Locate the security group and delete rules with port 23 and 514 \n"
+      },
+      "code": "control '6_01_05_telnet_rsh_ports' do\r\n  impact 0.8\r\n  title '6.1.5 - Alibaba Cloud Security Groups must be configured to block traffic for Telnet and RSH ports'\r\n  desc 'The bidirectional text-oriented terminal connection of Telnet port (23) or RSH port (514) is a deprecated / insecure \r\n  application layer protocol and must not be used in general.'\r\n  tag sgs_wiki_url: 'https://wiki.wdf.sap.corp/wiki/x/XLjGe'\r\n\r\n  tag remediation_steps: <<-EOF\r\n  1.  Log in to Alibaba Cloud Portal.\r\n  2.  Go to Elastic Compute Service.\r\n  3.  Under Network & Security > click Security Groups.\r\n  4.  Locate the security group and delete rules with port 23 and 514 \r\n\tEOF\r\n\r\n  alicloud_regions.region_names.each do |region_name|\r\n    alicloud_security_groups(region: region_name).entries.each do |sg_group|\r\n      describe alicloud_security_group(group_id: sg_group[:group_id], region: region_name) do\r\n        [23,514].each do |telnet_rsh_port|\r\n          it { should_not allow_in(port: telnet_rsh_port) }\r\n        end\r\n      end\r\n    end\r\n  end\r\nend",
+      "source_location": { "ref": "./controls/6_01_05.rb", "line": 1 },
+      "id": "6_01_05_telnet_rsh_ports"
+    },
+    {
+      "title": "6.2 - Alibaba Cloud Elastics Compute Service (ECS) instances must not be configured with public IP addresses",
+      "desc": "Public IP addresses must be disabled for all resources (e.g. VMs, containers, fully managed DBs, etc.) that do not require Internet access.\n  This policy identifies ECS instances that have a public IP address and are attached to security groups with Internet access. Because an ECS instance \n  receives a public IP address at the launch, by default, as a best practice ensure that the instance is attached to a security group which is not overly permissive.",
+      "descriptions": {
+        "default": "Public IP addresses must be disabled for all resources (e.g. VMs, containers, fully managed DBs, etc.) that do not require Internet access.\n  This policy identifies ECS instances that have a public IP address and are attached to security groups with Internet access. Because an ECS instance \n  receives a public IP address at the launch, by default, as a best practice ensure that the instance is attached to a security group which is not overly permissive."
+      },
+      "impact": 0.8,
+      "refs": [],
+      "tags": {
+        "sgs_wiki_url": "https://wiki.wdf.sap.corp/wiki/x/XLjGe",
+        "remediation_steps": "  Refain from using a public IP address for the ECS instance. You can either associate an Elastic IP address to it or modify the rules for the security groups to ensure restricted access.\n\n  To restrict Security Groups that allow all traffic, please follow the steps below:\n  1.  Log in to Alibaba Cloud Portal\n  2.  Go to Elastic Compute Service (or search for Elastic Compute Service in the search bar).\n  3.  Click on the reported ECS instance > Click on the Security Groups tab > Click the security group name.\n  4.  In Inbound tab, click on the rule having 'Action' as Allow and 'Authorization Object' as 0.0.0.0/0 > Click Modify under the Actions column > Replace the value 0.0.0.0/0 with the correct IP range.\n  5.  Click 'OK'.\n"
+      },
+      "code": "control '6_02_ecs_public_ip' do\r\n  impact 0.8\r\n  title '6.2 - Alibaba Cloud Elastics Compute Service (ECS) instances must not be configured with public IP addresses'\r\n  desc 'Public IP addresses must be disabled for all resources (e.g. VMs, containers, fully managed DBs, etc.) that do not require Internet access.\r\n  This policy identifies ECS instances that have a public IP address and are attached to security groups with Internet access. Because an ECS instance \r\n  receives a public IP address at the launch, by default, as a best practice ensure that the instance is attached to a security group which is not overly permissive.'\r\n  tag sgs_wiki_url: 'https://wiki.wdf.sap.corp/wiki/x/XLjGe'\r\n\r\n  tag remediation_steps: <<-EOF\r\n  Refain from using a public IP address for the ECS instance. You can either associate an Elastic IP address to it or modify the rules for the security groups to ensure restricted access.\r\n\r\n  To restrict Security Groups that allow all traffic, please follow the steps below:\r\n  1.  Log in to Alibaba Cloud Portal\r\n  2.  Go to Elastic Compute Service (or search for Elastic Compute Service in the search bar).\r\n  3.  Click on the reported ECS instance > Click on the Security Groups tab > Click the security group name.\r\n  4.  In Inbound tab, click on the rule having 'Action' as Allow and 'Authorization Object' as 0.0.0.0/0 > Click Modify under the Actions column > Replace the value 0.0.0.0/0 with the correct IP range.\r\n  5.  Click 'OK'.\r\n\tEOF\r\n\r\n  alicloud_ecs_instances.instance_ids.each do |instance_id|\r\n    ecs_instance = alicloud_ecs_instance(instance_id: instance_id)\r\n    next unless ecs_instance.public_ip_address != [] || ecs_instance.eip_address['IpAddress'] != ''\r\n    ecs_instance.security_group_ids['SecurityGroupId'].each do |security_group_id|\r\n      describe \"ECS instance #{instance_id}'s security group #{security_group_id}\" do\r\n        subject {alicloud_security_group(group_id: security_group_id)}\r\n        it { should_not allow_in(ipv4_range: '0.0.0.0/0')}\r\n      end\r\n    end\r\n  end\r\nend\r\n",
+      "source_location": { "ref": "./controls/6_02.rb", "line": 1 },
+      "id": "6_02_ecs_public_ip"
+    },
+    {
+      "title": "6.3 - Alibaba Cloud Server Load Balancer (SLB) HTTPS listeners must be enforced with SSL/TLS certificates of at least TLS v1.2 (TLS v1.1, v1.0 and SSL v2.0, v3.0 are forbidden)",
+      "desc": "It must be ensured that all SSL/TLS certificates used by a load balancer comply with SAP requirements specified in the SSL/TLS Hardening Procedure & Key Management Hardening Procedure.\n  It is recommended to use TLS v1.2 as the minimum.",
+      "descriptions": {
+        "default": "It must be ensured that all SSL/TLS certificates used by a load balancer comply with SAP requirements specified in the SSL/TLS Hardening Procedure & Key Management Hardening Procedure.\n  It is recommended to use TLS v1.2 as the minimum."
+      },
+      "impact": 0.8,
+      "refs": [],
+      "tags": {
+        "sgs_control_hash": "8ae223887226fcbd01722703b9830068",
+        "sgs_wiki_url": "https://wiki.wdf.sap.corp/wiki/x/XLjGe",
+        "remediation_steps": "\tAfter a Load balancer listener has been created, the protocol can't be changed. In order to remediate this alert, please delete the existing HTTP Listener and then create a new listener that uses the HTTPS protocol.\n\n  To create a new HTTPS Listener, please do the following steps: \n  1.  Log in to Alibaba Cloud Portal.\n  2.  Go to Server Load Balancer (or search for Server Load Balancer in the search bar).\n  3.  Locate the load balancer that caused the alert > Click on the load balancer name/ID.\n  4.  On the Listeners tab, click Add Listener.\n  5.  Select Select Listener Protocol as HTTPS > Set the other options as needed. \n  6.  Click Next. \n  7.  Select and enter the following options: 'SSL Certificates', 'Backend Servers' and 'Health Check' sections > Click Submit.\n\n  To delete existing HTTP Listener, please do the following steps: \n  1.  Log in to Alibaba Cloud Portal.\n  2.  Go to Server Load Balancer (or search for Server Load Balancer in the search bar).\n  3.  Locate the load balancer that caused the alert > Click on the load balancer name/ID.\n  4.  In the Listeners tab, choose HTTP Listener > Click More > Click Remove.\n  5.  Click OK.\n"
+      },
+      "code": "control '6_03_load_balancer_tls' do\r\n  impact 0.8\r\n  title '6.3 - Alibaba Cloud Server Load Balancer (SLB) HTTPS listeners must be enforced with SSL/TLS certificates of at least TLS v1.2 (TLS v1.1, v1.0 and SSL v2.0, v3.0 are forbidden)'\r\n  desc 'It must be ensured that all SSL/TLS certificates used by a load balancer comply with SAP requirements specified in the SSL/TLS Hardening Procedure & Key Management Hardening Procedure.\r\n  It is recommended to use TLS v1.2 as the minimum.'\r\n  tag sgs_control_hash: '8ae223887226fcbd01722703b9830068'\r\n  tag sgs_wiki_url: 'https://wiki.wdf.sap.corp/wiki/x/XLjGe'\r\n\r\n  tag remediation_steps: <<-EOF\r\n\tAfter a Load balancer listener has been created, the protocol can't be changed. In order to remediate this alert, please delete the existing HTTP Listener and then create a new listener that uses the HTTPS protocol.\r\n\r\n  To create a new HTTPS Listener, please do the following steps: \r\n  1.  Log in to Alibaba Cloud Portal.\r\n  2.  Go to Server Load Balancer (or search for Server Load Balancer in the search bar).\r\n  3.  Locate the load balancer that caused the alert > Click on the load balancer name/ID.\r\n  4.  On the Listeners tab, click Add Listener.\r\n  5.  Select Select Listener Protocol as HTTPS > Set the other options as needed. \r\n  6.  Click Next. \r\n  7.  Select and enter the following options: 'SSL Certificates', 'Backend Servers' and 'Health Check' sections > Click Submit.\r\n\r\n  To delete existing HTTP Listener, please do the following steps: \r\n  1.  Log in to Alibaba Cloud Portal.\r\n  2.  Go to Server Load Balancer (or search for Server Load Balancer in the search bar).\r\n  3.  Locate the load balancer that caused the alert > Click on the load balancer name/ID.\r\n  4.  In the Listeners tab, choose HTTP Listener > Click More > Click Remove.\r\n  5.  Click OK.\r\n\tEOF\r\n\r\n  alicloud_slbs.load_balancer_ids.each do |slb_id|\r\n    alicloud_slb(slb_id: slb_id).https_ports.each do |port|\r\n      describe alicloud_slb_https_listener(slb_id: slb_id, listener_port: port) do\r\n        its('tls_cipher_policy') { should be_in %w(tls_cipher_policy_1_2 tls_cipher_policy_1_2_strict) }\r\n      end\r\n    end\r\n  end\r\nend\r\n",
+      "source_location": { "ref": "./controls/6_03.rb", "line": 1 },
+      "id": "6_03_load_balancer_tls"
+    },
+    {
+      "title": "8.3 - Alibaba Cloud ApsaraDB RDS instances must be configured with allow lists that restrict traffic",
+      "desc": "While creating a ApsaraDB, you can choose between different Database Engines.\n  There are no restrictions regarding Microsoft SQL and PostgresSQL, but MySQL must\n  only be used for internal use. (Greylisted; See SAP SWAP rating in Corp. Portal /go/swap;\n  Therefore, no Internet or customer facing environment recommended using MySQL). A allow\n  list should also be created for your database.",
+      "descriptions": {
+        "default": "While creating a ApsaraDB, you can choose between different Database Engines.\n  There are no restrictions regarding Microsoft SQL and PostgresSQL, but MySQL must\n  only be used for internal use. (Greylisted; See SAP SWAP rating in Corp. Portal /go/swap;\n  Therefore, no Internet or customer facing environment recommended using MySQL). A allow\n  list should also be created for your database."
+      },
+      "impact": 0.8,
+      "refs": [],
+      "tags": {
+        "sgs_wiki_url": "https://wiki.wdf.sap.corp/wiki/x/XLjGe",
+        "remediation_steps": "  1.  Log in to Alibaba Cloud Portal.\n  2.  Go to ApsaraDB for RDS (or search for ApsaraDB in the search bar).\n  3.  On the left-side, click Instances.\n  4.  By the instance mentioned in the alert, click on 'Manage' under the Actions column.\n  5.  On the left-side navigation, click Data Security.\n  6.  In the Data Security section, click Modify on the allow list setting that has IP address 127.0.0.1 or 0.0.0.0/0 > Change the restrictive IP address in the box. \n  7.  Click OK.\n"
+      },
+      "code": "control '8_03_apsaradb_rds_allowlist_group' do\r\n  impact 0.8\r\n  title '8.3 - Alibaba Cloud ApsaraDB RDS instances must be configured with allow lists that restrict traffic'\r\n  desc 'While creating a ApsaraDB, you can choose between different Database Engines.\r\n  There are no restrictions regarding Microsoft SQL and PostgresSQL, but MySQL must\r\n  only be used for internal use. (Greylisted; See SAP SWAP rating in Corp. Portal /go/swap;\r\n  Therefore, no Internet or customer facing environment recommended using MySQL). A allow\r\n  list should also be created for your database.'\r\n  tag sgs_wiki_url: 'https://wiki.wdf.sap.corp/wiki/x/XLjGe'\r\n\r\n  tag remediation_steps: <<-EOF\r\n  1.  Log in to Alibaba Cloud Portal.\r\n  2.  Go to ApsaraDB for RDS (or search for ApsaraDB in the search bar).\r\n  3.  On the left-side, click Instances.\r\n  4.  By the instance mentioned in the alert, click on 'Manage' under the Actions column.\r\n  5.  On the left-side navigation, click Data Security.\r\n  6.  In the Data Security section, click Modify on the allow list setting that has IP address 127.0.0.1 or 0.0.0.0/0 > Change the restrictive IP address in the box. \r\n  7.  Click OK.\r\n    EOF\r\n\r\n  alicloud_apsaradb_rds_instances.db_instance_ids.each do |db_instance_id|\r\n    describe alicloud_apsaradb_rds_instance(db_instance_id) do\r\n      its('security_ips') { should_not include '0.0.0.0/0' }\r\n      its('security_ips') { should_not eq '' }\r\n    end\r\n  end\r\nend\r\n",
+      "source_location": { "ref": "./controls/8_03.rb", "line": 1 },
+      "id": "8_03_apsaradb_rds_allowlist_group"
+    }
+  ],
+  "groups": [
+    {
+      "title": null,
+      "controls": ["2_01_ra_2_password_policy", "2_01_key_rotation"],
+      "id": "controls/2_01.rb"
+    },
+    {
+      "title": null,
+      "controls": ["2_03_mfa_enabled"],
+      "id": "controls/2_03.rb"
+    },
+    {
+      "title": null,
+      "controls": ["5_01_public_buckets_not_allowed"],
+      "id": "controls/5_01.rb"
+    },
+    {
+      "title": null,
+      "controls": [
+        "5_02_bucket_encryption_enabled",
+        "5_02_disk_encryption_enabled"
+      ],
+      "id": "controls/5_02.rb"
+    },
+    {
+      "title": null,
+      "controls": ["6_01_01_db_ports"],
+      "id": "controls/6_01_01.rb"
+    },
+    {
+      "title": null,
+      "controls": ["6_01_02_admin_ports"],
+      "id": "controls/6_01_02.rb"
+    },
+    {
+      "title": null,
+      "controls": ["6_01_03_infra_ports"],
+      "id": "controls/6_01_03.rb"
+    },
+    {
+      "title": null,
+      "controls": ["6_01_04_fileshare_ports"],
+      "id": "controls/6_01_04.rb"
+    },
+    {
+      "title": null,
+      "controls": ["6_01_05_telnet_rsh_ports"],
+      "id": "controls/6_01_05.rb"
+    },
+    {
+      "title": null,
+      "controls": ["6_02_ecs_public_ip"],
+      "id": "controls/6_02.rb"
+    },
+    {
+      "title": null,
+      "controls": ["6_03_load_balancer_tls"],
+      "id": "controls/6_03.rb"
+    },
+    {
+      "title": null,
+      "controls": ["8_03_apsaradb_rds_allowlist_group"],
+      "id": "controls/8_03.rb"
+    }
+  ],
+  "inputs": [],
+  "sha256": "2568b0072b395d47a37e7bc30e4d003436414185eec8903f1d31fd10151edbf0",
+  "status_message": "",
+  "status": "loaded",
+  "generator": { "name": "inspec", "version": "4.56.17" }
+}

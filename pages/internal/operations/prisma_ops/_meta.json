@@ -1,0 +1,18 @@
+{
+  "admin_and_processes": " Administration & Processes ",
+  "prisma_cloud_overview": " Prisma Cloud Overview ",
+  "new_cloud_account": " Onboard Cloud Account onto Prisma Monitoring ",
+  "new_alert_exception": " Alert Suppression Procedure ",
+  "policies_and_exception_handling": " Policies and Exception Handling ",
+  "prisma_api_key_usage": " Prisma API Key Usage ",
+  "PrismaKeyRotationDocumentation": " Prisma Key Rotation Documentation ",
+  "new_user_account": " Runbook: Adding New Users to Prisma Cloud ",
+  "adding_users_to_multiple_groups": " Runbook: Adding Users to Multiple Groups ",
+  "account_group_membership_change": " Runbook: Adding a Group to an Accounts/Subscription/Project ",
+  "runbook_template": " Runbook: Adding/Changing Routes to a Router ",
+  "dismissing_alerts": " Runbook: Alert Dismissal and Policy Snooze/Dismissal ",
+  "account_creation_aws": " Runbook: Cloud Account Creation - AWS ",
+  "deleting_accounts": " Runbook: Deleting Cloud Accounts, Subscriptions, and Projects ",
+  "azure_delete_subscription": " Runbook: Deleting an Azure Subscription ",
+  "email_notifications_of_alerts": " Runbook: Email Alerts "
+}

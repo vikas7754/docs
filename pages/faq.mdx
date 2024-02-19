@@ -1,0 +1,378 @@
+---
+title: FAQ
+---
+
+# FAQ
+
+Contents have been organized by grouping questions by question category.
+
+Contents
+
+- [Security Solution](/FAQ#security-solution "Security Solution")
+  - _[What is Orca used for?](#what-is-orca-used-for "What is Orca used for?")_
+  - _[What is the Orca deployment scope?](#what-is-the-orca-deployment-scope "What is the Orca deployment scope?")_
+- [Solution Security](/FAQ#solution-security "Solution Security")
+  - _[How is data privacy accomplished?](#how-is-data-privacy-accomplished "How is data privacy accomplished?")_
+  - _[How is data sovereignty (EU-only access) handled?](#how-is-data-sovereignty-eu-only-access-handled "How is data sovereignty (EU-only access) handled?")_
+- [Access to Orca](/FAQ#access-to-orca "Access to Orca")
+  - _[How does a team onboard to Orca?](#how-does-a-team-onboard-to-orca "How does a team onboard to Orca?")_
+  - _[How long does it take to receive Orca access through CAM permissions?](#how-long-does-it-take-to-receive-orca-access-through-cam-permissions "How long does it take to receive Orca access through CAM permissions?")_
+- [Exceptions](/FAQ#exceptions "Exceptions")
+  - _[Can certain assets be excluded from a scan?](#can-certain-assets-be-excluded-from-a-scan "Can certain assets be excluded from a scan?")_
+  - _[How often are exceptions updated?](#how-often-are-exceptions-updated "How often are exceptions updated?")_
+- [Scanning](/FAQ#scanning "Scanning")
+  - _[How often are scans run?](#how-often-are-scans-run "How often are scans run?")_
+  - _[What is the duration of a scan?](#what-is-the-duration-of-a-scan "What is the duration of a scan?")_
+  - _[How does scanning work? (in-place)](#how-does-scanning-work-in-place "How does scanning work? (in-place)")_
+  - _[What is not scanned by Orca?](#what-is-not-scanned-by-orca "What is not scanned by Orca?")_
+  - _[How can I remove accounts no longer owned by my LoB?](#how-can-i-remove-accounts-no-longer-owned-by-my-lob "How can I remove accounts no longer owned by my LoB?")_
+  - _[How can an LoB reduce false positive alerts?](#how-can-an-lob-reduce-false-positive-alerts "How can an LoB reduce false positive alerts?")_
+  - _[Why are my Minerva results different from Orca results?](#why-are-my-minerva-results-different-from-orca-results "Why are my Minerva results different from Orca results?")_
+  - _[What if I have an issue with a control?](#what-if-i-have-an-issue-with-a-control "What if I have an issue with a control?")_
+  - _[Why does x policy exist?](#why-does-x-policy-exist "Why does x policy exist?")_
+  - _[Will there be any differences between the scan results between Minerva and Orca?](#will-there-be-any-differences-between-the-scan-results-between-minerva-and-orca "[Will there be any differences between the scan results between Minerva and Orca?")_
+  - _[Where can I find data from previous scans?](#where-can-i-find-data-from-previous-scans "Where can I find data from previous scans?")_
+  - _[Where can I find list of custom controls against which the hyperscaler account are getting scanned for?](#where-can-i-find-list-of-custom-controls-against-which-the-hyperscaler-account-are-getting-scanned-for "Where can I find list of custom controls against which the hyperscaler account are getting scanned for?")_
+  - _[How can I get list of all the alerts associated with the custom controls?](#how-can-i-get-list-of-all-the-alerts-associated-with-the-custom-controls "How can I get list of all the alerts associated with the custom controls?")_
+  - _[How to schedule a report(s) in Orca?](#how-to-schedule-a-reports-in-orca "How to schedule a report(s) in Orca?")_
+  - _[How to develop a report(s) showing first/last scanned date by control?](#how-to-develop-a-reports-showing-firstlast-scanned-date-by-control "How to develop a report(s) showing first/last scanned date by control?")_
+  - _[What is Orca Utils Dir?](#what-is-orca-utils-dir "What is Orca Utils Dir?")_
+  - _[Why should my LoB team contribute?](#why-should-my-lob-team-contribute "Why should my LoB team contribute?")_
+  - _[How to contribute to Orca Utils](#how-to-contribute-to-orca-utils "How to contribute to Orca Utils")_
+- [Support](/FAQ#support "Support")
+  - _[Where can I find remediation steps?](#where-can-i-find-remediation-steps "Where can I find remediation steps?")_
+  - _[How can I get support for Orca?](#how-can-i-get-support-for-orca "How can I get support for Orca?")_
+  - _[What if my question isn't answered here?](#what-if-my-question-isnt-answered-here "What if my question isn't answered here?")_
+  - _[How do I open ticket?](#how-do-i-open-ticket "How do I open ticket?")_
+  - _[How do I add or remove myself from the office hours DL?](#how-do-i-add-or-remove-myself-from-the-office-hours-dl "How do I add or remove myself from the office hours DL?")_
+- [Cost](/FAQ#cost "Cost")
+  - _[What costs will the LoB be accountable for?](#what-costs-will-the-lob-be-accountable-for "What costs will the LoB be accountable for?")_
+- [API](/FAQ#api "API")
+  - _[How can I pull my data via an API?](#how-can-i-pull-my-data-via-an-api "How can I pull my data via an API?")_
+- [Reporting](/FAQ#reporting "Reporting")
+  - _[How can I access dashboards and downloadable reports with regards to my compliance?](#how-can-i-access-dashboards-and-downloadable-reports-with-regards-to-my-compliance "How can I access dashboards and downloadable reports with regards to my compliance?")_
+  - _[Can you provide some insights into how access is managed in Hyperdash?](#can-you-provide-some-insights-into-how-access-is-managed-in-hyperdash "Can you provide some insights into how access is managed in Hyperdash?")_
+  - _[I found a bug in Hyperdash data. Where can I open an issue to report it?](#i-found-a-bug-in-hyperdash-data-where-can-i-open-an-issue-to-report-it "I found a bug in Hyperdash data. Where can I open an issue to report it?")_
+  - _[Why do I see additional controls in Orca than in Hyperdash?](#why-do-i-see-additional-controls-in-orca-than-in-hyperdash "Why do I see additional controls in Orca than in Hyperdash?")_
+- [Integration & Services](/FAQ#int&ser "Integration & Services")
+  - _[How can I integrate Orca alerts in Splunk?](#how-can-i-integrate-orca-alerts-in-splunk "How can I integrate Orca alerts in Splunk?")_
+  - _[How can I use Orca ShiftLeft?](#how-can-i-use-orca-shiftleft "How can I use Orca ShiftLeft?")_
+- [Attack Surface Reduction (ASR)](/FAQ#vulnerability-management-document "Vulnerability Management Documentation")
+
+## Security Solution
+
+The following questions can be answered in [Section 1.1](/external/Team_Overview#11-orca-deployment "Orca Deployment") of our team overview page:
+
+### What is Orca used for?
+
+From [1.1 Orca Deployment](/external/Team_Overview#11-orca-deployment)
+
+> The immediate use case that drove the initial deployment was to support resource and software Asset Management, specifically on virtual machines and containers. However, the solution also provides vulnerability scans for both. Orca also provides insight into misconfigurations in the landscape that could impact risk severity ratings including Kubernetes clusters, indicators of compromise, known malware, as well as use cases around IP address management and domain name registration.
+
+### What is the Orca deployment scope?
+
+From [1.1 Orca Deployment](/external/Team_Overview#11-orca-deployment "Orca Deployment")
+
+> The scope for Orca is all public cloud accounts in SAP, similar to the Minerva compliance scans. It does not provide coverage for Converged Cloud.
+
+> SAP cloud accounts were onboarded at the org level with scans disabled. Scans were triggered according to deployment rings in the same fashion that preventative controls were rolled out.
+
+## Solution Security
+
+The following questions can be answered in [Section 1.2](/external/Team_Overview#12-solution-security "Solution Security") of our team overview page:
+
+### How is data privacy accomplished?
+
+From [1.2 Solution Security](/external/Team_Overview#12-solution-security "Solution Security")
+
+> The SAP implementation of Orca has been installed in cloud accounts owned by SAP. Since the deployment is entirely within SAP cloud accounts, data never leaves SAP. The deployment, maintenance and management of the accounts is done by Orca. In this way, SAP consumes Orca as an SaaS solution while having all the data and components in SAP EMEA.
+
+> Orca's account access read-only. There is an added capability to create, read, and delete its own Orca tagged snapshots. Orca does not have permissions to make any changes to cloud accounts/landscapes. The solution does not have access to encrypted database files. If the scans detect PII data, it flags it for attention, but masks it in the results. Once onboarded, Orca reads account meta data and creates snapshots in the region of the originating instance of endpoints that are then scanned by Orca’s SaaS platform. Once the scan is completed the snapshots are deleted.
+
+### How is data sovereignty (EU-only access) handled?
+
+From [1.2 Solution Security](/external/Team_Overview#12-solution-security "Solution Security")
+
+> Orca reads account meta data and creates snapshots in the region of the originating instance of endpoints that are then scanned by Orca’s SaaS platform. Once the scan is completed the snapshots are deleted.
+
+## Access to Orca
+
+The following questions can be answered in [Section 6](/external/Team_Overview#6-access-to-orca "Access to Orca") of our team overview page:
+
+### How does a team onboard to Orca?
+
+From [6. Access to Orca](/external/Team_Overview#6-access-to-orca "Access to Orca")
+
+> For initial access to Orca, you will need to request the following automatically approved CAM profile: Multicloud_Orca_User. This profile does not provide permissions in Orca but enables you to sign into Orca via SSO. You will have to periodically request this profile to have continued access to Orca. Beginning on December 21st, 2022, once a user has signed into Orca, their permissions will be automatically provisioned and updated based on the Hyperscaler Account roles and Group roles. Prior to this point, all users with only the Multicloud_Orca_User CAM profile will have blank permissions and should not be able to view any account information in Orca.
+
+### How long does it take to receive Orca access through CAM permissions?
+
+> It can take 3-4 hours after auto-approved CAM permission.
+
+## Exceptions
+
+The following questions can be answered in [Section 10](/external/Team_Overview#10-exceptions "Exceptions") of our team overview page:
+
+### Can certain assets be excluded from a scan?
+
+From [10. Exceptions](/external/Team_Overview#10-exceptions "Exceptions")
+
+> Exceptions are applied at the account level and all assets within the account are excluded for the policy in scope.
+
+### How often are exceptions updated?
+
+From [3.2 Orca Compliance Scanning](/external/Team_Overview#32-orca-compliance-scanning "Orca Compliance Scanning")
+
+> Scans are performed on a scheduled basis (the default is every twelve hours and reconfigured to run everyday) and also based on detected changes in cloud logs.
+
+## Scanning
+
+The following questions are largely answered in [Section 3](/external/Team_Overview#3-hyperscaler-compliance "Hyperscaler Compliance") of our team overview page:
+
+### How often are scans run?
+
+From [3.1 Hyperscaler Security Compliance Scans](/external/Team_Overview#31-hyperscaler-security-compliance-scans "Hyperscaler Security Compliance Scans") and [3.2 Orca Compliance Scanning](/external/Team_Overview#32-orca-compliance-scanning "Orca Compliance Scanning")
+
+> - Orca scans are daily
+> - Minerva scans are weekly (replaced by Orca scans)
+
+### What is the duration of a scan?
+
+From [3.2 Orca Compliance Scanning](/external/Team_Overview#32-orca-compliance-scanning "Orca Compliance Scanning")
+
+> Scan duration is largely measured by the duration it takes for Orca to create the snapshot of the target account (approximately 15 minutes).
+
+### How does scanning work? (in-place)
+
+From [1.2 Solution Security](/external/Team_Overview#12-solution-security "Solution Security")
+
+> Orcas account access read-only. There is an added capability to create, read, and delete its own Orca tagged snapshots. Orca does not have permissions to make any changes to cloud accounts/landscapes. The solution does not have access to encrypted database files. If the scans detect PII data, it flags it for attention, but masks it in the results. Once onboarded, Orca reads account meta data and creates snapshots in the region of the originating instance of endpoints that are then scanned by Orca’s SaaS platform. Once the scan is completed the snapshots are deleted.
+
+### What is not scanned by Orca?
+
+From [1.2 Solution Security](/external/Team_Overview#12-solution-security "Solution Security")
+
+> The solution does not have access to encrypted database files. If the scans detect PII data, it flags it for attention, but masks it in the results.
+
+### How can I remove accounts no longer owned by my LoB?
+
+From [6.4 Account Maintenance](/external/Team_Overview#64-account-maintenance "Account Maintenance")
+
+> - To have your Hyperscaler Account modified or to have it deleted you can open a Service Now ticket under [GCS - Hyperscaler - Manage/Delete Account](https://itsm.services.sap/sp?id=sc_cat_item&sys_id=b64709911bc17850341e11739b4bcb0c&sysparm_category=2bdc7f571ba07850d9c921fbbb4bcb82 "GCS - Hyperscaler - Manage/Delete Account").
+> - Deletions can also be processed in HSDB.
+> - On the Orca side, automation looks at any account listed as "DELETED" in HSDB and will offboard the account 90 days after the initial deletion date. It's worth noting that any associated alerts with the cloud account will have been dismissed as soon as the deletion was processed in HSDB.
+
+### How can an LoB reduce false positive alerts?
+
+From [7. Control Details](/external/Team_Overview#7-control-details "Control Details")
+
+> Please review remediation steps for each respective control. If you believe you have remediated the alert in scope as mandated by SGS's hardening guidelines a ticket can be opened here [5.3 Hyperscalers Security Engineering & Operations (HSEO) Support](/external/Team_Overview#53-hyperscalers-security-engineering--operations-hseo-support "Hyperscalers Security Engineering & Operations (HSEO) Support")
+
+### Why are my Minerva results different from Orca results?
+
+More information can be found in [7. Control Details](/external/Team_Overview#7-control-details "Control Details")
+
+> However, the short answer is that the controls are written differently due to the change on the back end. There are also some additional controls being scanned with Orca.
+
+### What if I have an issue with a control?
+
+From 5.3 [Hyperscalers Security Engineering & Operations (HSEO) Support](/external/Team_Overview#53-hyperscalers-security-engineering--operations-hseo-support "Hyperscalers Security Engineering & Operations (HSEO) Support")
+
+> Tickets can be opened for false positives and general control explanation. However if you disagree with the enforcement of a control, SGS would be the ones to contact.
+
+### Why does x policy exist?
+
+Answered in [7.1-7.4](/external/Team_Overview#7-control-details "control-details")
+
+> This is a question for SGS. We merely enforce the policies they mandated by their hyperscaler hardening guidelines.
+
+### Will there be any differences between the scan results between Minerva and Orca?
+
+> Yes. We have created a document to outline the key differences in the scan results along with a detailed explanation. [Minevra v/s Orca controls differences](./external/compliance_scanning/orca_vs_minerva_controls.md)
+
+### Where can I find data from previous scans?
+
+From [3.3 Accessing Previous Scans](/external/Team_Overview#33-accessing-previous-scans "Accessing Previous Scans")
+
+> Previous Minerva scan data can be found in the [MC Secure Architecture & Engineering](https://sap.sharepoint.com/teams/MCSecureArchandEngineering/Shared%20Documents/Forms/AllItems.aspx?RootFolder=%2Fteams%2FMCSecureArchandEngineering%2FShared%20Documents%2FGeneral%2FWeekly%20Minerva%20Data%20Dumps&FolderCTID=0x012000BD28024DFDAF47468E69380606887991 "MC Secure Architecture & Engineering") sharepoint.
+
+### Where can I find list of custom controls against which the hyperscaler account are getting scanned for?
+
+From [4.1 How to get alerts](/external/Team_Overview#41-how-to-get-alerts "How to get alerts")
+
+> Login into Orca portal -> Navigate to the menu -> Settings -> Modules -> Alerts Settings -> All the controls under "Custom Alerts" tab are SAP specific controls developed. [SAP Custom controls](https://eu.sap.app.orcasecurity.io/modules/alert-settings)
+
+### How can I get list of all the alerts associated with the custom controls?
+
+From [4.1 To get list of all alerts associated with the custom controls](/external/Team_Overview#to-get-a-list-of-all-the-alerts-associated-with-the-custom-controls "To get a list of all the alerts associated with the custom controls")
+
+### How to schedule a report(s) in Orca?
+
+> In Orca, you have the flexibility to easily create and manage scheduled reports, including sending them to your desired recipients with a specified schedule.
+
+- To set up a scheduled report, follow these steps:
+  1.  Go to the "Alerts" tab in the Orca.
+  2.  In the top-left corner, click on "Current View".
+  3.  Choose "SGS-Custom-Alerts" from the list of available shared views.
+  4.  On the right, click "Export".
+  5.  Here, you can either generate a report in your preferred format (CSV or JSON) by selecting "download" or you can "schedule" an automatic delivery report which you can also share to any specified distribution channels (Slack channel, AWS S3 bucket, Azure Blob, and GCP bucket).
+  6.  Click Done.
+
+### How to develop a report(s) showing first/last scanned date by control?
+
+> - Option 1: To get alert using Sonar Query
+
+    1. Go to [**Discovery**](https://eu.sap.app.orcasecurity.io/discovery) and click **Back to Sonar**.
+    2. Run the following Sonar queries:
+    	- For <font color="red">high</font> alerts:
+    		```Alert with Labels containing "sap" and CreatedAt <= 3 months ago and RiskLevel = "high"```
+    		```Alert with Labels containing "sap_{hyperscaler}" and CreatedAt <= 3 months ago and RiskLevel = "high"```
+    	- For **medium** alerts:
+    		```Alert with Labels containing "sap" and CreatedAt <= 6 months ago and RiskLevel = "medium"```
+    		```Alert with Labels containing "sap_{hyperscaler}" and CreatedAt <= 6 months ago and RiskLevel = "medium"```
+    		- If you are getting timeout error or zero result, most likely the controls were not available in prod until around July 2023.
+    		- Last seen date for all alerts will be presented in the downloaded reports.
+    3. Click search.
+    4. To generate a report, go to **Export** tab and Download in your preferred format or you can schedule report by using **Generate Report** option.
+
+> - Option 2: From HSDB Orca [API endpoint](https://db.multicloud.int.sap/compliance/orca/ "Orca Alert API")
+
+    - Please refer to API docs below for reference:
+    	- [How to use the HSDB API for Orca compliance alerts](/external/compliance_scanning/orca/hsdb_api)
+    	- [HSDB Orca API Document](https://docs.multicloud.int.sap/infra/api/ComplianceAPI/Orca)
+    	- [Orca Alerts by matrix](https://db.multicloud.int.sap/#operation/metrics_orca_alerts_older_per_lob_read)
+
+### What is **Orca Utils Dir**?
+
+> The Orca [Utils](https://github.tools.sap/SAE/orca/tree/main/utils "Utils") Repository is a central hub where our team can share useful scripts, solutions, and resources that can benefit everyone. It serves as a knowledge-sharing platform to foster collaboration and efficiency within the SAP.
+
+### Why should my LoB team contribute?
+
+> - Knowledge Sharing: Share expertise, improving productivity.
+> - Reusability: Save time by using others' solutions.
+> - Teamwork: Foster a culture of collaboration.
+
+### How to contribute to Orca [Utils](https://github.tools.sap/SAE/orca/tree/main/utils "Utils")?
+
+> - Clone the repository, create a new branch, and add your content/commit.
+> - Submit a pull request with a clear description & readme file.
+> - Reviews will be managed by HSEO team members and finally, you can merge your PR.
+
+## Support
+
+The following questions are largely answered in [Section 5.3](/external/Team_Overview#53-hyperscalers-security-engineering--operations-hseo-support "Hyperscalers Security Engineering & Operations (HSEO) Support") of our team overview page:
+
+### Where can I find remediation steps?
+
+From [7. Control Details](/external/Team_Overview#7-control-details "7. Control Details")
+
+> - [7.1 AWS Compliance Scanning Control Details](/external/compliance_scanning/orca_aws_controls "7.1 AWS Compliance Scanning Control Details")
+> - [7.2 Azure Compliance Scanning Control Details](/external/compliance_scanning/orca_azure_controls "7.2 Azure Compliance Scanning Control Details")
+> - [7.3 GCP Compliance Scanning Control Details](/external/compliance_scanning/orca_gcp_controls "7.3 GCP Compliance Scanning Control Details")
+> - [7.4 AliCloud Compliance Scanning Control Details](/external/compliance_scanning/orca_alicloud_controls "7.4 AliCloud Compliance Scanning Control Details")
+
+### How can I get support for Orca?
+
+From [5.3 Hyperscalers Security Engineering & Operations (HSEO) Support](/external/Team_Overview#53-hyperscalers-security-engineering--operations-hseo-support "Hyperscalers Security Engineering & Operations (HSEO) Support")
+
+> Orca ticket: [GCS - Hyperscaler - Orca](https://itsm.services.sap/sp?id=sc_cat_item&sys_id=ada60b961bd09150341e11739b4bcb65&sysparm_category=cbe15fd61b549150341e11739b4bcb8a&catalog_id=09a3ed6a1b2f80d020c8fddacd4bcb02 "GCS - Hyperscaler - Orca")
+
+### What if my question isn't answered here?
+
+From [5.3 Hyperscalers Security Engineering & Operations (HSEO) Support](/external/Team_Overview#53-hyperscalers-security-engineering--operations-hseo-support "Hyperscalers Security Engineering & Operations (HSEO) Support")
+
+> Hyperscaler Security ticket (formerly GCS-MC-Security): [GCS - SRRC - Hyperscaler Security](https://itsm.services.sap/sp?id=sc_cat_item&sys_id=142b0e5c1be17890341e11739b4bcbfb&sysparm_category=b20df7171ba07850d9c921fbbb4bcbc2&catalog_id=09a3ed6a1b2f80d020c8fddacd4bcb02 "GCS - SRRC - Hyperscaler Security")
+
+### How do I open ticket?
+
+From [5.3 Hyperscalers Security Engineering & Operations (HSEO) Support](/external/Team_Overview#53-hyperscalers-security-engineering--operations-hseo-support "Hyperscalers Security Engineering & Operations (HSEO) Support")
+
+> Hyperscaler Security ticket: [GCS - SRRC - Hyperscaler Security](https://itsm.services.sap/sp?id=sc_cat_item&sys_id=142b0e5c1be17890341e11739b4bcbfb&sysparm_category=b20df7171ba07850d9c921fbbb4bcbc2&catalog_id=09a3ed6a1b2f80d020c8fddacd4bcb02 "GCS - SRRC - Hyperscaler Security")
+
+### How do I add or remove myself from the office hours DL?
+
+From [9.2 Cloud Security Office Hours](/external/Team_Overview#92-cloud-security-office-hours "Cloud Security Office Hours")
+
+> The Cloud Security Office Hours DL has been made public and the meeting will be refreshed periodically to update the attendee list.
+
+> The link to the DL can be found here: [Cloud Security Office Hours Distro](https://profiles.wdf.sap.corp/groups/639b3e017b962d029ab9a580/users "Cloud Security Office Hours Distro")
+
+> For your convenience, here's a quick join directly: [Join DL Cloud Security Office Hours Distro (External)](https://profiles.wdf.sap.corp/groups/639b3e017b962d029ab9a580/join "Join DL Cloud Security Office Hours Distro (External)")
+
+## Cost
+
+### What costs will the LoB be accountable for?
+
+From [1.3 Solution Costs](/external/Team_Overview#13-solution-costs "Solution Costs")
+
+> There are minimal costs that the LoBs are accountable for. While normally an SaaS solution, Orca for SAP is deployed in SAP-owned dedicated cloud accounts operated by the Hyperscalers Security Engineering & Operations (HSEO). Orca will create snapshots of running compute instances and transfer that to a scanner running in the same cloud region and same provider in the HSEO cloud account. All of the scanning occurs there, with the cloud run costs incurred by the HSEO team.
+
+> License and operating costs for 2022 are already covered through the SCD2 budget. For 2023, there will be discussions about cross-charging, but the primary targets for those are stakeholder organizations for the resulting data, such as CCIR (SISM), SAM (ALM) and SGS, not the LoBs.
+
+## API
+
+### How can I pull my data via an API?
+
+From [4.2 API Documentation](/external/Team_Overview#42-api-documentation "API Documentation")
+
+> Information on how to connect and use the HSDB API for Orca can be found [here](/external/compliance_scanning/orca/hsdb_api "here").
+
+## Reporting
+
+### How can I access dashboards and downloadable reports with regards to my compliance?
+
+From [9.3 Hyperdash](/external/Team_Overview#93-hyperdash "Hyperdash")
+
+> - Project Hyperdash is a single-pane solution that streamlines the management of accounts across all Hyperscalers by consolidating data from multiple sources.
+
+    - <ins>[Overview URL: https://pages.github.tools.sap/SAE/hyperdash/](https://pages.github.tools.sap/SAE/hyperdash/ "Hyperdash")</ins>
+    - <ins>[Office Hours URL: https://hyperdash.multicloud.int.sap/office-hours](https://hyperdash.multicloud.int.sap/office-hours "Office Hours")</ins>
+    - <ins>[Compliance URL: https://hyperdash.multicloud.int.sap/compliance](https://hyperdash.multicloud.int.sap/compliance "Compliance")</ins>
+
+### Can you provide some insights into how access is managed in Hyperdash?
+
+From [9.3.3 Hyperdash Access](/external/Team_Overview#933-access "Hyperdash Access")
+
+> Access controls in Hyperdash are managed through the **HSE Database**, which automatically updates permissions based on your roles within accounts and groups on HSDB.
+
+### I found a bug in Hyperdash data. Where can I open an issue to report it?
+
+From [9.3.4 Hyperdash Bug Reporting](/external/Team_Overview#934-bug-reporting "Hyperdash Bug Reporting")
+
+> - To report a bug in Hyperdash, you have two options:
+> - <ins>GitHub Issue</ins>: You can open an issue on the Hyperdash GitHub
+>   repository. You can do this by visiting the Hyperdash GitHub repository
+>   [here](https://github.tools.sap/SAE/hyperdash/issues "here") and creating a
+>   new issue with details about the bug you encountered. This is a formal way
+>   to report issues and allows for structured tracking and resolution.
+> - <ins>Teams Channel</ins>: Additionally, you can also post a message in the
+>   dedicated Teams channel for Hyperdash. You can access this channel
+>   [here](https://teams.microsoft.com/dl/launcher/launcher?url=%2F_%23%2Fl%2Fchannel%2F19%3AdyN0YYXe3GeoWVJm0kr63DBW-fUDlkVzf9MB6waAq6Q1%40thread.tacv2%2FGeneral%3FgroupId%3D642bb392-f459-4c25-97ee-ca393921f717%26tenantId%3D42f7676c-f455-423c-82f6-dc2d99791af7&type=channel&deeplinkId=4e5f0ab1-ea45-405a-b9aa-4450d0c98dbb&directDl=true&msLaunch=true&enableMobilePage=true&suppressPrompt=true
+>   "here"). This can be a more informal way to report issues or discuss them
+>   with the Hyperdash team and the community.
+
+### Why do I see additional controls in Orca than in Hyperdash?
+
+From [9.3.5 Hyperdash Data Downloads and Backend](/external/Team_Overview#935-data-downloads-and-backend "Hyperdash Data Downloads and Backend")
+
+> One of the Hyperdash services specifically reaches out directly to the Orca API endpoint for ‘Custom Rules’ which are the custom SGS policies developed in Orca. However, the Orca default view, currently includes alerts for the controls that are not part of the SGS custom policies but are orca in-built. These additional ones are not being reported on. For more information on how to filter the Orca alerts for the SGS custom controls only, please refer to [4.1 How to get alerts](/external/Team_Overview#41-how-to-get-alerts "How to get alerts").
+
+## Integration & Services
+
+### How can I integrate Orca alerts in Splunk?
+
+> - Familiarise with the [Splunk integration](https://docs.orcasecurity.io/docs/integrating-splunk "Splunk integration") to make sure you know what you need.
+
+> - Once you have a clear idea, create a [ticket](https://itsm.services.sap/sp?id=sc_cat_item&sys_id=ada60b961bd09150341e11739b4bcb65&sysparm_category=cbe15fd61b549150341e11739b4bcb8a&catalog_id=09a3ed6a1b2f80d020c8fddacd4bcb02) to request Splunk integration.
+>   Additional steps will be provided by the Engineer dealing with your ticket.
+
+### How can I use Orca ShiftLeft?
+
+> - Familiarise with the [ShiftLeft feature](https://docs.orcasecurity.io/docs/shift-left-security "ShiftLeft feature") to make sure you know what you need.
+
+> - Once you have a clear idea, create a [ticket](https://itsm.services.sap/sp?id=sc_cat_item&sys_id=ada60b961bd09150341e11739b4bcb65&sysparm_category=cbe15fd61b549150341e11739b4bcb8a&catalog_id=09a3ed6a1b2f80d020c8fddacd4bcb02) to request ShiftLeft enablement.
+>   Additional steps will be provided by the Engineer dealing with your ticket.
+
+## Vulnerability Management Documentation
+
+> - This link contains all the documentation related to [Vulnerability Management](https://wiki.one.int.sap/wiki/x/3DQL3w).

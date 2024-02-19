@@ -1,0 +1,12 @@
+import NextTopLoader from "nextjs-toploader";
+import "../styles/global.css";
+
+export const MyApp = ({ Component, pageProps }) => {
+  return (
+    <>
+      <NextTopLoader color="red" height={2} shadow="none" showSpinner={false} />
+      <Component {...pageProps} />
+    </>
+  );
+};
+export default MyApp;

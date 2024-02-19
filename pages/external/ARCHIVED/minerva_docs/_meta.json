@@ -1,0 +1,20 @@
+{
+  "minerva": "[ARCHIVE] Minerva - Do your own security scans whenever you want",
+  "solution_architecture": "[ARCHIVE] Compliance Scanning Architecture",
+  "enfofprisma": "[ARCHIVE] Prisma is retiring on Q2/2022 (1st of April 2022)",
+  "docker": "[ARCHIVE] Prepare Docker for Minerva",
+  "help": "[ARCHIVE] HELP! - I have no Idea what to do",
+  "Minerva-API-User-Guide": "[ARCHIVE] Minerva API User Guide",
+  "faq": "[ARCHIVE] Frequently asked questions",
+  "minervaaliaccount": "[ARCHIVE] Minerva - Setup the AliCloud service account",
+  "minervaawsaccount": "[ARCHIVE] Minerva - Setup the AWS service account",
+  "minervagcpaccount": "[ARCHIVE] Minerva - Setup the GCP service account",
+  "minervamsazaccount": "[ARCHIVE] Minerva - Setup the Azure service account",
+  "minervaserviceaccount": "[ARCHIVE] Minerva - Setting up the Service account",
+  "Weekly_Reporting_emails": "[ARCHIVE] Reporting Emails",
+  "Report_Compliance_Mailer": "[ARCHIVE] Report Compliance Mailer",
+  "minerva_aws_controls": "[ARCHIVE] Minerva AWS Control Details",
+  "minerva_azure_controls": "[ARCHIVE] Minerva Azure Control Details",
+  "minerva_alicloud_controls": "[ARCHIVE] Minerva AliCloud Control Details",
+  "minerva_gcp_controls": "[ARCHIVE] Minerva GCP Control Details"
+}

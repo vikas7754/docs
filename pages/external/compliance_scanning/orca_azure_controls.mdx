@@ -1,0 +1,21 @@
+# Orca Azure Control Details
+
+### How to Use This Document
+
+Below you will find detailed information for each released Orca Azure control. Remediations for the controls are found below using manual steps (console-based) and automated steps (Terraform-based). Follow the manual steps if you do not use Terraform to manage your resources, or add the Terraform configurations to your Terraform modules. **Please thoroughly test and adapt the Terraform configurations as needed**.
+
+### Control Severity details:
+
+Following are control severities:
+
+1. `8.0` represents HIGH/MUST severity controls
+2. `5.0` represents MEDIUM/SHOULD severity controls
+3. `1.0` represents informational controls
+
+### Note:
+
+The informational controls will not be reported on. These controls will eventually be release as high or medium in coming releases.
+
+import Controls from "../../../components/controls.mdx";
+
+<Controls file={"azure-controls.yaml"} />

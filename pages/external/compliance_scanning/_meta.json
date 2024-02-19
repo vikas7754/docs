@@ -1,0 +1,8 @@
+{
+  "orca_aws_controls": "Orca AWS Control Details",
+  "orca_alicloud_controls": "Orca AliCloud Control Details",
+  "orca_azure_controls": "Orca Azure Control Details",
+  "orca_gcp_controls": "Orca GCP Control Details",
+  "orca_vs_minerva_controls": "Orca VS Minerva Control Details",
+  "orca": "Orca"
+}

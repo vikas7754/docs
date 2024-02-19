@@ -1,0 +1,61 @@
+import axios from "axios";
+import { useEffect, useState } from "react";
+
+export default function Controls({ file }) {
+   const [controls, setControls] = useState([]);
+
+useEffect(() => {
+async function fetchData() {
+const response = await axios.get(`/api/yaml-parsing?file=./data/${file}`);
+if(response?.data?.controls) setControls(response.data.controls);
+}
+fetchData();
+}, []);
+
+return (
+
+<div>
+{controls.map(control => (
+<div key={control.name}>
+<h3>{control.description}</h3>
+<p>Control Name: {control.name}</p>
+<p>Control Severity: {control.score}</p>
+<p>Control Query: <code>{control.query.replace('&#39;', "'").replace('&quot;', '"')}</code></p>
+<p>Enabled status: {control.enabled}</p>
+<p>Control Category: {control.category}</p>
+<p><a href={control?.sgs_wiki_link}>SAP Global Security Requirement Wiki</a></p>
+
+          <h4>Manual Remediation steps:</h4>
+          {control.remediation_steps ? (
+            <p>{control.remediation_steps}</p>
+          ) : (
+            <>
+              <p>
+                We are in the process of defining manual remediation steps for this control, please consult the policy defined in the <a href={control?.tags?.sgs_wiki_url}>SAP Global Security Requirement Wiki</a> in the mean-time.
+              </p>
+              <p>
+                Please reach out to us on <a href="https://sap-multi-cloud.slack.com/archives/C0122SCP6QN">slack</a> if the remediation is not clear based on the policy.
+              </p>
+            </>
+          )}
+
+          <h4>Terraform Remediation steps:</h4>
+          {control.terraform_remediation ? (
+            <>
+              {control.tested_tf_version && (
+                <p>This Terraform remediation has been tested with Terraform version {control.tested_tf_version}</p>
+              )}
+              <pre>{control.terraform_remediation}</pre>
+              {control.terraform_remediation_note && (
+                <p>Note regarding this Terraform remediation: {control.terraform_remediation_note}</p>
+              )}
+            </>
+          ) : (
+            <p>There is currently no Terraform remediation defined, please reach out to us on <a href="https://sap-multi-cloud.slack.com/archives/C0122SCP6QN">slack</a> if you believe Terraform could be used for remediation in this instance.</p>
+          )}
+        </div>
+      ))}
+    </div>
+
+);
+}
